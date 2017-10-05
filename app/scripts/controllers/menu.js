@@ -199,6 +199,25 @@ angular.module('titanClienteV2App')
         }
       ]
     },
+    { //Seguimiento contractual
+      "Id": 5,
+      "Nombre": "Seguimiento contractual",
+      "Url": "",
+      "Opciones": [
+        { //Crear informe de gestión
+          "Id": 1,
+          "Nombre": "Informe de gestión",
+          "Url": "seguimiento_contractual/crear_informe",
+          "Opciones": null
+        },
+        { //Crear cumplido
+          "Id": 1,
+          "Nombre": "Cumplido",
+          "Url": "seguimiento_contractual/crear_cumplido",
+          "Opciones": null
+        }
+      ]
+    }
 
   ];
 

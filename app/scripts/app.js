@@ -106,6 +106,16 @@ angular
         controller: 'BeneficiariosCtrl',
         controllerAs: 'beneficiarios'
       })
+      .when('/seguimiento_contractual/crear_informe', {
+        templateUrl: 'views/seguimiento_contractual/crear_informe.html',
+        controller: 'CrearInformeCtrl',
+        controllerAs: 'crearInforme'
+      })
+      .when('/seguimiento_contractual/crear_cumplido', {
+        templateUrl: 'views/seguimiento_contractual/crear_cumplido.html',
+        controller: 'CrearCumplidoCtrl',
+        controllerAs: 'crearCumplido'
+      })
       .otherwise({
         redirectTo: '/'
       });
