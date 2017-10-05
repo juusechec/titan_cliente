@@ -10,51 +10,53 @@
         <div class="panel-body">
           <form role="form">
             <div class="row">
-              <div class="form-group col-lg-6">
+              <div class="form-group col-lg-9">
                 <label>NUMERO DOCUMENTO DE IDENTIDAD</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido.Documento" placeholder="Ingrese su número de documento de identidad" required>
+                <input type="text" class="form-control" ng-model="crearCumplido.Documento" placeholder="Ingrese su número de documento de identidad" required>
+              </div>
+                <div class="form-group col-lg-3">
+                  <label></label>
+                  <input type="submit" class="form-control btn btn-success" value="Consultar Información" ng-click="crearCumplido.obtener_informacion_cumplido()">
               </div>
               <div class="form-group col-lg-6">
                 <label>NOMBRE</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido.Nombre" required>
+                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.nombre_completo">
               </div>
               <div class="form-group col-lg-6">
                 <label>TIPO DOCUMENTO</label>
-                <input type="text" class="form-control" ng-model="crearInforme.informe.Mes" required>
+                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.Documento.tipo">
               </div>
               <div class="form-group col-lg-6">
                 <label>CIUDAD</label>
-                <input type="text" class="form-control" ng-model="crearInforme.informe.Mes" required>
+                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.Documento.ciudad">
               </div>
               <div class="form-group col-lg-6">
                 <label>NUMERO CONTRATO</label>
-                <input type="text" class="form-control" ng-model="crearInforme.informe.Mes" required>
+                <input type="text" class="form-control" ng-model="crearCumplido.cumplido.numero_contrato">
               </div>
               <div class="form-group col-lg-6">
                 <label>FECHA SUSCRIPCIÓN CONTRATO</label>
-                <input type="text" class="form-control" ng-model="crearInforme.informe.Mes" required>
+                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.contrato.fecha">
               </div>
               <div class="form-group col-lg-6">
                 <label>TIPO CUENTA</label>
-                <input type="text" class="form-control" ng-model="crearInforme.informe.Mes" required>
+                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.cuenta.tipo">
               </div><div class="form-group col-lg-6">
                 <label>BANCO</label>
-                <input type="text" class="form-control" ng-model="crearInforme.informe.Mes" required>
+                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.cuenta.banco">
               </div>
               <div class="form-group col-lg-6">
                 <label>NÚMERO CUENTA</label>
-                <input type="text" class="form-control" ng-model="crearInforme.informe.Mes" required>
+                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.cuenta.numero">
               </div>
 
               <div class="form-group col-lg-6">
                 <label>DEPENDENCIA</label>
-                <select class="form-control"  ng-model="crearInforme.informe.Dependencia" ng-options="option.Nombre for option in crearInforme.dependencias">
-                      <option value="">--Elija la dependencia a la que pertenece--</option>
-                </select>
+                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.dependencia">
               </div>
               <div class="form-group col-lg-6">
                 <label>CUMPLIDO DEL MES</label>
-                <input type="text" class="form-control" ng-model="crearInforme.informe.Mes" required>
+                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.mes">
               </div>
               </div>
 

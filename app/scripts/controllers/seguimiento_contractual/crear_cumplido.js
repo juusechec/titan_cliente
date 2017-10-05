@@ -13,21 +13,38 @@ angular.module('titanClienteV2App')
     //Variable self
     var self = this;
 
-    self.prueba = {};
+    //Variable que contiene la información del cumplido
+    self.cumplido = {};
 
-    //
-    $http.get('http://jbpm.udistritaloas.edu.co:8280/services/contratoSuscritoProxyService/contratos_persona/1030619892', {
-      headers: {'Accept':'application/json'}
-    }).then(function(response){
-      self.prueba = response.data;
-      console.log(self.prueba.contratos_personas.contrato_persona[0]);
-      console.log(self.prueba);
+    //Función que obtiene el número de contrato y la vigencia de acuerdo al número de identidad
+    self.obtener_informacion_cumplido = function(){
+      //Petición para obtener el número del contrato y la vigencia de los contratos en ejecución de la persona del identificador de la cedula
+      $http.get('http://jbpm.udistritaloas.edu.co:8280/services/contratoSuscritoProxyService/contratos_persona/'+self.Documento+'', {
+        headers: {'Accept':'application/json'}
+      }).then(function(response){
+        //Variable que contiene la información de la respuesta de la petición
+        self.respuesta_contratos_persona = response.data;
+        //Variable que contiene la información de contrato persona
+        self.cumplido = self.respuesta_contratos_persona.contratos_personas.contrato_persona[0];
+
+        console.log(self.cumplido);
+
+            //Consumo de servicio para obtener la información del contratista
+            $http.get('http://jbpm.udistritaloas.edu.co:8280/services/contratoSuscritoProxyService/informacion_contrato_contratista/' + self.cumplido.numero_contrato +'/' +self.cumplido.vigencia + '',
+            {
+              headers: {'Accept':'application/json'}
+            }
+          ).then(function(response){
+            //Variable que contiene la respuesta del servicio informacion_contrato_contratista
+              self.respuesta_cumplido_informacion = response.data;
+
+            //Variable que contiene la informacion del cumplido_informacion
+             self.cumplido_informacion = self.respuesta_cumplido_informacion.informacion_contratista;
+
+             console.log(self.cumplido_informacion);
+          });
     });
-    //contratos_persona.Object.numero_contrato
-
-
-    //$sce.trustAsResourceUrl('http://jbpm.udistritaloas.edu.co:8280/services/contrato_suscrito_DataService.HTTPEndpoint/contratos_persona/');
-
+};
     //Función que obtiene todas las dependencias
     oikosRequest.get('dependencia', $.param({
         limit: -1
@@ -36,19 +53,4 @@ angular.module('titanClienteV2App')
         self.dependencias = response.data;
         console.log(self.dependencias);
       });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   });
