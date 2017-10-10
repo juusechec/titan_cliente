@@ -215,6 +215,12 @@ angular.module('titanClienteV2App')
           "Nombre": "Cumplido",
           "Url": "seguimiento_contractual/crear_cumplido",
           "Opciones": null
+        },
+        { //Aprobación pago
+          "Id": 1,
+          "Nombre": "Aprobar pago",
+          "Url": "seguimiento_contractual/aprobacion_pago",
+          "Opciones": null
         }
       ]
     }
