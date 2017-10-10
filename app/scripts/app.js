@@ -116,6 +116,11 @@ angular
         controller: 'CrearCumplidoCtrl',
         controllerAs: 'crearCumplido'
       })
+      .when('/seguimiento_contractual/aprobacion_pago', {
+        templateUrl: 'views/seguimiento_contractual/aprobacion_pago.html',
+        controller: 'AprobacionPagoCtrl',
+        controllerAs: 'aprobacionPago'
+      })
       .otherwise({
         redirectTo: '/'
       });
