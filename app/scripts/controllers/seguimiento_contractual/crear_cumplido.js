@@ -57,24 +57,16 @@ angular.module('titanClienteV2App')
     self.obtener_pago = function(){
 
       console.log(self.cumplido_informacion.valor_contrato);
-
+      //Cambia a tipo entero el valor del contrato
       self.valor_contrato_int = parseInt(self.cumplido_informacion.valor_contrato);
+      //Cambia a tipo entero el tiempo en días de la ejecución del contrato
       self.valor_tiempo_dias_int = parseInt(self.cumplido_informacion.tiempo.valor);
-
+      //Obtiene el valor del día laborado
       self.valor_dia_contrato = (self.valor_contrato_int/self.valor_tiempo_dias_int);
-
+      //Número de días laborados
       self.dias_laborados = (self.cumplido_informacion.dia_final - (self.cumplido_informacion.dia_inicial - 1));
-
+      //Valor a cobrar de acuerdo a los días laborados
       self.cumplido_informacion.valor_cobro = (self.valor_dia_contrato * self.dias_laborados);
-
-      console.log(self.dias_laborados);
-      console.log(self.cumplido_informacion.valor_cobro);
-      console.log(self.cumplido_informacion.dia_inicial);
-      console.log(self.cumplido_informacion.dia_final);
-      console.log(self.valor_contrato_int);
-      console.log(self.valor_tiempo_dias_int);
-      console.log(self.valor_dia_contrato);
-
     }
 
 

@@ -15,6 +15,7 @@
                 <input type="text" class="form-control" ng-model="crearCumplido.Documento" placeholder="Ingrese su número de documento de identidad" required>
               </div>
               <div class="form-group col-lg-3">
+                  <label></label>
                   <input type="submit" class="form-control btn btn-success" value="Consultar Información" ng-click="crearCumplido.obtener_informacion_cumplido()">
               </div>
               <div class="form-group col-lg-6">
@@ -37,6 +38,16 @@
                 <label>FECHA SUSCRIPCIÓN CONTRATO</label>
                 <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.contrato.fecha">
               </div>
+              <div class="form-group col-lg-6">
+                <label>UNIDAD EJECUTORA</label>
+                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.supervisor.cargo">
+              </div>
+
+              <div class="form-group col-lg-6">
+                <label>VIGENCIA</label>
+                <input type="text" class="form-control" ng-model="crearCumplido.cumplido.vigencia">
+              </div>
+
               <div class="form-group col-lg-6">
                 <label>TIPO CUENTA</label>
                 <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.cuenta.tipo">
@@ -101,11 +112,7 @@
                   <input  type="submit" class="form-control btn btn-success" value="Consultar valor a cobrar" ng-click="crearCumplido.obtener_pago()">
               </div>
 
-      </div>
-
-
-
-
+        </div>
 
                 <div class="form-group col-lg-8 col-lg-offset-2">
                     <label></label>
