@@ -64,5 +64,46 @@ angular.module('titanClienteV2App')
       }
     ];
 
+    /*
+      Función para consultar los datos del supervisor del contrato y los contratistas asociados a este
+    */
+    self.obtener_informacion_supervisor = function() {
+      //Petición para obtener la información del supervisor del contrato
+      $http.get('http://jbpm.udistritaloas.edu.co:8280/services/contratoSuscritoProxyService/supervisor_contratistas/' + self.Documento + '', {
+        headers: {
+          'Accept': 'application/json'
+        }
+      }).then(function(response) {
+        //Variable que contiene la información de la respuesta de la petición
+        self.respuesta_supervisor_contratistas = response.data;
+
+        console.log(self.respuesta_supervisor_contratistas.supervisores.supervisor_contratista[0].supervisor.nombre);
+
+        console.log(self.respuesta_supervisor_contratistas.supervisores.supervisor_contratista[0].supervisor.cargo);
+
+        //Variable que contiene la información de contrato persona
+        self.supervisor = self.respuesta_contratos_persona.contratos_personas.contrato_persona[0];
+
+        self.gridOptions1.data = self.respuesta_supervisor_contratistas.supervisores.supervisor_contratista[0]
+
+        console.log(self.cumplido);
+
+        //Consumo de servicio para obtener la información del contratista
+        $http.get('http://jbpm.udistritaloas.edu.co:8280/services/contratoSuscritoProxyService/informacion_contrato_contratista/' + self.cumplido.numero_contrato + '/' + self.cumplido.vigencia + '', {
+          headers: {
+            'Accept': 'application/json'
+          }
+        }).then(function(response) {
+          //Variable que contiene la respuesta del servicio informacion_contrato_contratista
+          self.respuesta_cumplido_informacion = response.data;
+
+          //Variable que contiene la informacion del cumplido_informacion
+          self.cumplido_informacion = self.respuesta_cumplido_informacion.informacion_contratista;
+
+          console.log(self.cumplido_informacion);
+        });
+      });
+    };
+
 
   });

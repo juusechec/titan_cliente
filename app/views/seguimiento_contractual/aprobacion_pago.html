@@ -2,7 +2,7 @@
 <div class="panel panel-default">
   <div class="panel panel-primary panel-body">
     <!--Cabecera del panel-->
-    <h2 class="page-header text-center">APROBACIONES DE PAGO</h2>
+    <h2 class="page-header text-center">APROBACIONES DOCUMENTOS NÓMINA</h2>
 
   <div class="panel-body">
     <div class="row">
@@ -16,20 +16,16 @@
               </div>
               <div class="form-group col-lg-3">
                   <label>  </label>
-                  <input type="submit" class="form-control btn btn-success" value="Consultar Información" ng-click="crearCumplido.obtener_informacion_cumplido()">
+                  <input type="submit" class="form-control btn btn-success" value="Consultar Información" ng-click="aprobacionPago.obtener_informacion_supervisor()">
               </div>
               <div class="form-group col-lg-6">
                 <label>NOMBRE SUPERVISOR</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.nombre_completo">
-              </div>
-              <div class="form-group col-lg-6">
-                <label>DEPENDENCIA</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.dependencia">
+                <input type="text" class="form-control" ng-model="aprobacionPago.supervisor.nombre_completo">
               </div>
 
               <div class="form-group col-lg-6">
                 <label>CARGO SUPERVISOR DEL CONTRATO</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.supervisor.cargo">
+                <input type="text" class="form-control" ng-model="aprobacionPago.cumplido_informacion.supervisor.cargo">
               </div>
       </div>
 
