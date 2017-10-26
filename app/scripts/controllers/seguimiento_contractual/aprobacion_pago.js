@@ -84,48 +84,30 @@ angular.module('titanClienteV2App')
       self.gridApi = gridApi;
   };
 
+
+
     /*
-      Datos de prueba
+      Función que recibe un objeto que posee un arreglo con información de los contratistas y su supervisor.
+      Eśta función extrae el arreglo y los procesa para adicionar un atributo de validación.
     */
-  /*  self.gridOptions1.data = [
-      { //Pensionados
-        "Id": 1,
-        "Nombre": "Juan Perez"
-      },
-      { //Ingresar beneficiarios
-        "Id": 1,
-        "Nombre": "Kike Zambrano"
-      },
-      { //Ingresar sustitutos
-            "Id": 1,
-            "Nombre": "Eusebio Pele"
-      }
-    ];*/
+
+    self.procesar_contratistas = function(supervisor_contratistas){
+      
+            for(var i = 0; i<supervisor_contratistas.length;i++){
+             self.contratistas[i] = {
+             num_documento:  supervisor_contratistas[i].contratista.documento,
+             nombre : supervisor_contratistas[i].contratista.nombre,
+             dependencia :  supervisor_contratistas[i].supervisor.dependencia,
+             cargo_supervision : supervisor_contratistas[i].supervisor.cargo,
+             validacion : false 
+            }
+            }
+          }
 
     /*
       Función para consultar los datos del supervisor del contrato y los contratistas asociados a este
     */
 
-
-    /*$http.get('http://jbpm.udistritaloas.edu.co:8280/services/contratoSuscritoProxyService/supervisor_contratistas/' + self.Documento + '', {
-      headers: {
-        'Accept': 'application/json'
-      }
-    })*/
-
-
-    self.procesar_contratistas = function(supervisor_contratistas){
-
-      for(var i = 0; i<supervisor_contratistas.length;i++){
-       self.contratistas[i] = {
-       num_documento:  supervisor_contratistas[i].contratista.documento,
-       nombre : supervisor_contratistas[i].contratista.nombre,
-       dependencia :  supervisor_contratistas[i].supervisor.dependencia,
-       cargo_supervision : supervisor_contratistas[i].supervisor.cargo,
-       validacion : false 
-      }
-      }
-    }
 
    
     self.obtener_informacion_supervisor = function() {
@@ -149,32 +131,11 @@ angular.module('titanClienteV2App')
         
         self.gridOptions1.data = self.contratistas;
 
-       // console.log(self.cumplido);
-
-        //Consumo de servicio para obtener la información del contratista
-       /* $http.get('http://jbpm.udistritaloas.edu.co:8280/services/contratoSuscritoProxyService/informacion_contrato_contratista/' + self.cumplido.numero_contrato + '/' + self.cumplido.vigencia + '', {
-          headers: {
-            'Accept': 'application/json'
-          }
-        }).then(function(response) {
-          //Variable que contiene la respuesta del servicio informacion_contrato_contratista
-          self.respuesta_cumplido_informacion = response.data;
-
-          //Variable que contiene la informacion del cumplido_informacion
-          self.cumplido_informacion = self.respuesta_cumplido_informacion.informacion_contratista;
-
-          console.log(self.cumplido_informacion);
-        });*/
 
       });
 
            } catch (error) {
       
-      // swal(
-      //   'Oops...',
-      //   error,
-      //   'error'
-      // )
       
             }
 
