@@ -121,6 +121,11 @@ angular
         controller: 'AprobacionPagoCtrl',
         controllerAs: 'aprobacionPago'
       })
+      .when('/seguimiento_contractual/aprobacion_documentos', {
+        templateUrl: 'views/seguimiento_contractual/aprobacion_documentos.html',
+        controller: 'AprobacionDocumentosCtrl',
+        controllerAs: 'aprobacionDocumentos'
+      })
       .otherwise({
         redirectTo: '/'
       });
