@@ -8,7 +8,7 @@
  * Controller of the titanClienteV2App
  */
 angular.module('titanClienteV2App')
-    .controller('CrearInformeCtrl', function (oikosRequest, $http, uiGridConstants) {
+    .controller('CrearInformeCtrl', function (oikosRequest, $http, uiGridConstants, $translate) {
 
       //Variable de template que permite la edición de las filas de acuerdo a la condición ng-if
       var tmpl = '<div ng-if="!row.entity.editable">{{COL_FIELD}}</div><div ng-if="row.entity.editable"><input ng-model="MODEL_COL_FIELD"</div>';
@@ -100,7 +100,7 @@ angular.module('titanClienteV2App')
           {
             field: 'Nombre',
             cellTemplate: tmpl,
-            displayName: 'Actividades realizadas',
+            displayName: $translate.instant('ACTI_REALI'),
             sort: {
               direction: uiGridConstants.ASC,
               priority: 1
@@ -109,25 +109,26 @@ angular.module('titanClienteV2App')
           {
             field: 'Metas',
             cellTemplate: tmpl,
-            displayName: 'Metas'
+            displayName: $translate.instant('METAS')
           },
           {
             field: 'Indicador',
             cellTemplate: tmpl,
-            displayName: 'Indicador de cumplimiento'
+            displayName: $translate.instant('INDI_DE_CUMP')
           },
           {
             field: 'Nivel',
             cellTemplate: tmpl,
-            displayName: 'Nivel de avance'
+            displayName: $translate.instant('METAS')
           },
           {
             field: 'Observaciones',
             cellTemplate: tmpl,
-            displayName: 'Observaciones'
+            displayName: $translate.instant('OBSERVACIONES')
           },
           {
             field: 'Acciones',
+            displayName: $translate.instant('ACC'),
             cellTemplate: '<button title="Editar" type="button" class="btn btn-success btn-circle" ng-click="grid.appScope.consultarDependencia.abrir_modal_editar(row)" data-toggle="modal" data-target="#editarDependencia">' +
             '<i class="glyphicon glyphicon-pencil"></i></button>&nbsp;' + '<button title="Eliminar registro" type="button" class="btn btn-primary btn-circle"' +
             'ng-click="grid.appScope.consultarDependencia.vincular_espacios(row)" data-toggle="modal" data-target="#vincularEspacios"><i class="glyphicon glyphicon-eye-open"></i></button>'

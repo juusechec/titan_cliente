@@ -2,7 +2,7 @@
 <div class="panel panel-default">
   <div class="panel panel-primary panel-body">
     <!--Cabecera del panel-->
-    <h2 class="page-header text-center">INFORME DE GESTIÓN</h2>
+    <h2 class="page-header text-center">{{ 'TITULO_REG_INFORME' | translate }}</h2>
 
   <div class="panel-body">
     <div class="row">
@@ -11,58 +11,70 @@
           <form role="form">
             <div class="row">
               <div class="form-group col-lg-9">
-                <label>NUMERO DOCUMENTO DE IDENTIDAD</label>
-                <input type="text" class="form-control" ng-model="crearInforme.Documento" placeholder="Ingrese su número de documento de identidad" required>
+                <label>{{ 'NUM_DOC_IDENTIDAD' | translate }}</label>
+                <input type="text" class="form-control" ng-model="crearInforme.Documento" placeholder="{{ 'PLACE_NUM_DOC' | translate }}" required>
               </div>
               <div class="form-group col-lg-3">
                   <label></label>
-                  <input type="submit" class="form-control btn btn-success" value="Consultar Información" ng-click="crearInforme.obtener_informacion_informe()">
+                  <input type="submit" class="form-control btn btn-success" value="{{ 'ACCION_CONSULTAR_NUM_DOC' | translate }}" ng-click="crearInforme.obtener_informacion_informe()">
               </div>
               <div class="form-group col-lg-6">
-                <label>FECHA SUSCRIPCIÓN CONTRATO</label>
-                <input type="text" class="form-control" ng-model="crearInforme.informe.Fecha_suscripcion" required>
-              </div>
-              <div class="form-group col-lg-6">
-                <label>NOMBRE</label>
+                <label>{{ 'NAME_CONTRATISTA' | translate }}</label>
                 <input type="text" class="form-control" ng-model="crearInforme.informe.Nombre" required>
               </div>
               <div class="form-group col-lg-6">
-                <label>NUMERO DOCUMENTO DE IDENTIDAD</label>
-                <input type="text" class="form-control" ng-model="crearInforme.informe.Documento" required>
-              </div>
-              <div class="form-group col-lg-6">
-                <label>DEPENDENCIA</label>
-                <select class="form-control"  ng-model="crearInforme.informe.Dependencia" ng-options="option.Nombre for option in crearInforme.dependencias">
-                      <option value="">--Elija la dependencia a la que pertenece--</option>
+                <label>{{ 'INFORME_MES' | translate }}</label>
+                <select class="form-control"  ng-model="crearInforme.informe.Mes" required>
+                       <option value="">{{ 'PLACE_MES' | translate }}</option>
+                       <option value="ENERO">ENERO</option>
+                       <option value="FEBRERO">FEBRERO</option>
+                       <option value="MARZO">MARZO</option>
+                       <option value="ABRIL">ABRIL</option>
+                       <option value="MAYO">MAYO</option>
+                       <option value="JUNIO">JUNIO</option>
+                       <option value="JULIO">JULIO</option>
+                       <option value="AGOSTO">AGOSTO</option>
+                       <option value="SEPTIEMBRE">SEPTIEMBRE</option>
+                       <option value="OCTUBRE">OCTUBRE</option>
+                       <option value="NOVIEMBRE">NOVIEMBRE</option>
+                       <option value="DICIEMBRE">DICIEMBRE</option>
                 </select>
               </div>
               <div class="form-group col-lg-6">
-                <label>CUMPLIDO DEL MES</label>
-                <input type="text" class="form-control" ng-model="crearInforme.informe.Mes" required>
+                <label>{{ 'FECH_SUSC_CONT' | translate }}</label>
+                <input type="text" class="form-control" ng-model="crearInforme.informe.Fecha_suscripcion" required>
               </div>
               <div class="form-group col-lg-6">
-                <label>FECHA INICIO DEL CONTRATO</label>
+                <label>{{ 'DEPENDENCIA' | translate }}</label>
+                <select class="form-control"  ng-model="crearInforme.informe.Dependencia" ng-options="option.Nombre for option in crearInforme.dependencias">
+                      <option value="">{{'TEXT_DEPEN' | translate}}</option>
+                </select>
+              </div>
+
+              <div class="form-group col-lg-6">
+                <label>{{ 'FECHA_INI_CONTRACT' | translate }}</label>
                 <input type="text" class="form-control" ng-model="crearInforme.informe.Fecha_inicio" required>
               </div>
               <div class="form-group col-lg-6">
-                <label>FECHA FIN DEL CONTRATO</label>
+                <label>{{ 'FECHA_FIN_CONTRACT' | translate }}</label>
                 <input type="text" class="form-control" ng-model="crearInforme.informe.Fecha_fin" required>
               </div>
               <div class="form-group col-lg-12">
-                  <label>OBJETO DEL CONTRATO</label>
+                  <label>{{ 'OBJETO_CONTRACT' | translate }}</label>
                   <textarea rows="7" class="form-control" ng-model="crearInforme.informe.Objeto" required></textarea>
               </div>
               </div>
           </form>
       </div>
-
-      <button type="button" id="addData" class="btn btn-success" ng-click="addData()">Agregar registro</button>
-
+      <center>
+          <button type="button" id="addData" class="btn btn-success" ng-click="addData()" align="center">{{'AGREGAR_REG' | translate}}</button>
+      </center>
+      <BR></BR>
       <div style="height: {{gridHeight}}px;" ui-grid="crearInforme.gridOptions1" align='center' ui-grid-auto-resize></div>
 
                 <div class="form-group col-lg-8 col-lg-offset-2">
                     <label></label>
-                    <input type="submit" class="form-control btn btn-success" value="Generar Informe" ng-click="resolucionGeneracion.crearResolucion()">
+                    <input type="submit" class="form-control btn btn-success" value="{{ 'GEN_INFORME' | translate }}" ng-click="resolucionGeneracion.crearResolucion()">
                 </div>
           </form>
         </div>
