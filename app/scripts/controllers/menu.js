@@ -227,6 +227,12 @@ angular.module('titanClienteV2App')
           "Nombre": "Aprobar pago",
           "Url": "seguimiento_contractual/aprobacion_pago",
           "Opciones": null
+        },
+        { //Cargar listas docentes vinculación especial
+          "Id": 1,
+          "Nombre": "Cargar listas",
+          "Url": "seguimiento_contractual/carga_documentos_docente",
+          "Opciones": null
         }
       ]
     }

@@ -126,6 +126,11 @@ angular
         controller: 'AprobacionDocumentosCtrl',
         controllerAs: 'aprobacionDocumentos'
       })
+      .when('/seguimiento_contractual/carga_documentos_docente', {
+        templateUrl: 'views/seguimiento_contractual/carga_documentos_docente.html',
+        controller: 'CargaDocumentosDocenteCtrl',
+        controllerAs: 'cargaDocumentosDocente'
+      })
       .otherwise({
         redirectTo: '/'
       });
