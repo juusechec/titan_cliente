@@ -32,7 +32,8 @@ angular
     'ui.utils.masks',
     'pascalprecht.translate',
     'titanService',
-    'titanMidService'
+    'titanMidService',
+    'file-model'
   ])
     .run(function(amMoment) {
       amMoment.changeLocale('es');
