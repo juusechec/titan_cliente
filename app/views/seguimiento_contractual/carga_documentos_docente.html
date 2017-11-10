@@ -4,45 +4,46 @@
     <!--Cabecera del panel-->
     <h2 class="page-header text-center">{{'TITULO_CARGA_LISTAS' | translate}}</h2>
 
-  <div class="panel-body">
-    <div class="row">
-      <div class="panel panel-default col-lg-10 col-lg-offset-1">
-        <div class="panel-body">
-          <form role="form">
-            <div class="row">
-              <div class="form-group col-lg-9">
-                <label>{{'NUM_DOC_IDENTIDAD'| translate}}</label>
-                <input type="text" ng-model="" class="form-control"  placeholder="{{'PLACE_NUM_DOC'| translate}}" required>
-              </div>
-              <div class="form-group col-lg-3">
+    <div class="panel-body">
+      <div class="row">
+        <div class="panel panel-default col-lg-10 col-lg-offset-1">
+          <div class="panel-body">
+            <form role="form">
+              <div class="row">
+                <div class="form-group col-lg-9">
+                  <label>{{'NUM_DOC_IDENTIDAD'| translate}}</label>
+                  <input type="text" ng-model="cargaDocumentosDocente.Documento" class="form-control" placeholder="{{'PLACE_NUM_DOC'| translate}}" required>
+                </div>
+                <div class="form-group col-lg-3">
                   <label>  </label>
-                  <input type="submit" class="form-control btn btn-success" value="{{'ACCION_CONSULTAR_NUM_DOC' | translate}}" ng-click="" >
+                  <input type="submit" class="form-control btn btn-success" value="{{'ACCION_CONSULTAR_NUM_DOC' | translate}}" ng-click="">
+                </div>
+                <div class="form-group col-lg-6">
+                  <label>{{'NOM_DOCENTE'| translate}}</label>
+                  <input type="text" class="form-control" ng-model="cargaDocumentosDocente.docente.Nombre">
+                </div>
               </div>
-              <div class="form-group col-lg-6">
-                <label>{{'NOM_DOCENTE'| translate}}</label>
-                <input type="text" class="form-control" ng-model="">
-              </div>
-              <div class="form-group col-lg-6">
-                <label>{{'DEPENDENCIA'| translate}}</label>
-                <input type="text" class="form-control" ng-model="">
-              </div>
-            </div>
-          </form>
 
-          <!-- Botón para cargar el documento de las listas-->
-          <form class="form-group col-lg-12" action="http://localhost:8082/upload" method="post" enctype="multipart/form-data">
+              <div style="height: {{gridHeight}}px;" ui-grid="cargaDocumentosDocente.gridOptions1" align='center' ui-grid-auto-resize></div>
+
+            </form>
+
             <div class="row">
-              <div class="form-group col-lg-4">
-                <input  class="form-control btn btn-success" type="file" name="file"> <br>
-                <input  class="btn btn-primary" type="submit" value="Upload">
+              <div class="col-md-3">
+                <label for="input_resumen" class="col-form-label">Seleccione el Documento</label>
+              </div>
+              <div class="col-md-9">
+                <input type='file' class="form-control" file-model='fileModel'>
               </div>
             </div>
-          </form>
+            <button ng-click="cargaDocumentosDocente.subir_documento()">
+        subir
+      </button>
 
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-</div>
+  </div>
 </div>
