@@ -8,14 +8,14 @@
  * Controller of the titanClienteV2App
  */
 angular.module('titanClienteV2App')
-  .controller('CargaDocumentosDocenteCtrl', function($scope, $http, $translate,uiGridConstants) {
+  .controller('CargaDocumentosDocenteCtrl', function($scope, $http, $translate,uiGridConstants, contratoRequest) {
     //Variable de template que permite la edición de las filas de acuerdo a la condición ng-if
     var tmpl = '<div ng-if="!row.entity.editable">{{COL_FIELD}}</div><div ng-if="row.entity.editable"><input ng-model="MODEL_COL_FIELD"</div>';
 
         //Se utiliza la variable self estandarizada
         var self = this;
         //Variable que tendrá los contratos del docente
-        self.contratos = [];
+        //self.contratos = [];
         self.docente = {};
 
         /*
@@ -34,12 +34,12 @@ angular.module('titanClienteV2App')
             "Resolucion":"MTO/TCO",
             "Dependencia":"INGENIERIA ELECTRONICA",
             "Vigencia":"2017",
-            "Vinculacion": "123"
+            "Vinculacion": "425"
           }
         ];
 
         //Datos estaticos del docente
-        //self.docente.Nombre = self.docente_contratos[0].Nombre;
+        self.docente.Nombre = self.docente_contratos[0].Nombre;
 
 
         /*
@@ -110,29 +110,31 @@ angular.module('titanClienteV2App')
           self.gridApi = gridApi;
         };
 
-      //self.gridOptions1.data = self.docente_contratos;
+      self.gridOptions1.data = self.docente_contratos;
 
         /*
           Función que recibe un objeto que posee un arreglo con información de los contratos que tiene el docente.
           Eśta función extrae el arreglo y los procesa para adicionar un atributo de validación.
         */
-        self.procesar_contratos = function (docente) {
-            for (var i = 0; i < docente.length; i++) {
+        self.procesar_contratos = function (contratos_docente) {
+
+            for (var i = 0; i < contratos_docente.length; i++) {
+              console.log(contratos_docente.length);
               self.contratos[i] = {
-                Num_vinculacion: docente[i].contratos.Vinculacion,
-                Nombre: docente[i].contratos.Nombre,
-                Vigencia: docente[i].contratos.Vigencia,
-                Dependencia: docente[i].contratos.Dependencia,
-                Resolucion: docente[i].contratos.Resolucion,
+                Num_vinculacion: contratos_docente[i].contrato.numero_vinculacion,
+                Nombre: contratos_docente[i].contrato.nombre_docente,
+                Vigencia: contratos_docente[i].contrato.vigencia,
+                Dependencia: contratos_docente[i].contrato.dependencia,
+                Resolucion: contratos_docente[i].contrato.dedicacion,
                 validacion: false
               }
             }
-          }
+          };
 
         /*
           Función para consultar los datos del docente y los contratos asociados a este
         */
-        self.obtener_informacion_supervisor = function () {
+        self.obtener_informacion_docente = function () {
           //Petición para obtener la información del docente
           self.gridOptions1.data = [];
           self.contratos = [];
@@ -143,18 +145,21 @@ angular.module('titanClienteV2App')
 
               console.log(self.respuesta_docente);
 
+              console.log(self.respuesta_docente.contratos_docentes.contratos_docente);
+
               console.log(response.status);
+
+              console.log(self.Documento);
 
 
               //Procesamiento
-              /*
-              self.procesar_contratistas(self.respuesta_docente.supervisores.supervisor_contratista);
-              console.log(self.contratistas);
+              self.procesar_contratos(self.respuesta_docente.contratos_docentes.contratos_docente);
+              console.log(self.contratos);
 
 
-              self.supervisor = self.respuesta_docente.supervisores.supervisor_contratista[0].supervisor;
+              //self.supervisor = self.respuesta_docente.supervisores.supervisor_contratista[0].supervisor;
 
-              self.gridOptions1.data = self.contratistas;*/
+            //  self.gridOptions1.data = self.contratistas;
 
 
             });
