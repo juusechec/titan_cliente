@@ -14,33 +14,6 @@ angular.module('titanClienteV2App')
 
         //Se utiliza la variable self estandarizada
         var self = this;
-        //Variable que tendrá los contratos del docente
-        //self.contratos = [];
-        self.docente = {};
-
-        /*
-        Datos de prueba
-        */
-        self.docente_contratos =[
-          {
-            "Nombre":"Pepito Perez",
-            "Resolucion":"HCH",
-            "Dependencia":"INGENIERIA DE SISTEMAS",
-            "Vigencia":"2017",
-            "Vinculacion": "123"
-          },
-          {
-            "Nombre":"Pepito Perez",
-            "Resolucion":"MTO/TCO",
-            "Dependencia":"INGENIERIA ELECTRONICA",
-            "Vigencia":"2017",
-            "Vinculacion": "425"
-          }
-        ];
-
-        //Datos estaticos del docente
-        self.docente.Nombre = self.docente_contratos[0].Nombre;
-
 
         /*
           Creación tabla que tendrá todos los contratos relacionados al docente
@@ -49,7 +22,6 @@ angular.module('titanClienteV2App')
           enableSorting: true,
           enableFiltering: true,
           resizable: true,
-          rowHeight: 40,
           columnDefs: [
             {
               field: 'Resolucion',
@@ -59,6 +31,7 @@ angular.module('titanClienteV2App')
                 direction: uiGridConstants.ASC,
                 priority: 1
               },
+              width: "20%"
             },
             {
               field: 'Vigencia',
@@ -71,7 +44,7 @@ angular.module('titanClienteV2App')
               width: "20%"
             },
             {
-              field: 'Vinculacion',
+              field: 'Num_vinculacion',
               cellTemplate: tmpl,
               displayName: $translate.instant('NUM_VINC'),
               sort: {
@@ -94,11 +67,10 @@ angular.module('titanClienteV2App')
             {
               field: 'Acciones',
               displayName: $translate.instant('ACC'),
-              cellTemplate: ' <a type="button" title="Aprobar pago" type="button" class="fa fa-check fa-lg  faa-shake animated-hover" ng-if="!row.entity.validacion" ng-click="grid.appScope.aprobacionDocumentos.validarCumplido(row.entity)">' +
+              cellTemplate: ' <a type="button" title="Cargar listas" type="button" class="fa fa-upload fa-lg  faa-shake animated-hover" ng-if="!row.entity.validacion" ng-click="grid.appScope.aprobacionDocumentos.validarCumplido(row.entity)">' +
               '</a>&nbsp;' + '<a type="button" title="Rechazar pago" type="button" class="fa fa-close fa-lg  faa-shake animated-hover"' +
-              'ng-if="row.entity.validacion" ng-click="grid.appScope.aprobacionDocumentos.invalidarCumplido(row.entity)"></a>' +
-              '<a type="button" title="Ver información" type="button" class="fa fa-eye fa-lg  faa-shake animated-hover"' +
-              'ng-click="grid.appScope.aprobacionDocumentos.verInformacionContrato(row.entity)" data-toggle="modal" data-target="#modal_informacion_contrato"></a>',
+              'ng-if="row.entity.Resolucion == \'TCO\' || row.entity.Resolucion ==\'MTO\'" ng-click="grid.appScope.aprobacionDocumentos.invalidarCumplido(row.entity)"></a>',
+
               width: "10%"
             }
           ]
@@ -110,8 +82,6 @@ angular.module('titanClienteV2App')
           self.gridApi = gridApi;
         };
 
-      self.gridOptions1.data = self.docente_contratos;
-
         /*
           Función que recibe un objeto que posee un arreglo con información de los contratos que tiene el docente.
           Eśta función extrae el arreglo y los procesa para adicionar un atributo de validación.
@@ -119,13 +89,12 @@ angular.module('titanClienteV2App')
         self.procesar_contratos = function (contratos_docente) {
 
             for (var i = 0; i < contratos_docente.length; i++) {
-              console.log(contratos_docente.length);
               self.contratos[i] = {
-                Num_vinculacion: contratos_docente[i].contrato.numero_vinculacion,
-                Nombre: contratos_docente[i].contrato.nombre_docente,
-                Vigencia: contratos_docente[i].contrato.vigencia,
-                Dependencia: contratos_docente[i].contrato.dependencia,
-                Resolucion: contratos_docente[i].contrato.dedicacion,
+                Num_vinculacion: contratos_docente[i].numero_vinculacion,
+                Nombre: contratos_docente[i].nombre_docente,
+                Vigencia: contratos_docente[i].vigencia,
+                Dependencia: contratos_docente[i].dependencia,
+                Resolucion: contratos_docente[i].dedicacion,
                 validacion: false
               }
             }
@@ -141,26 +110,18 @@ angular.module('titanClienteV2App')
           try {
             contratoRequest.get('contratos_docente', self.Documento).then(function (response) {
 
+              //Contiene la respuesta de la petición
               self.respuesta_docente = response.data;
 
-              console.log(self.respuesta_docente);
-
-              console.log(self.respuesta_docente.contratos_docentes.contratos_docente);
-
-              console.log(response.status);
-
-              console.log(self.Documento);
-
-
-              //Procesamiento
+              //Procesamiento de datos para grid
               self.procesar_contratos(self.respuesta_docente.contratos_docentes.contratos_docente);
               console.log(self.contratos);
 
+              //Variable que contiene el nombre del docente
+              self.nombre_docente = self.contratos[0].Nombre;
 
-              //self.supervisor = self.respuesta_docente.supervisores.supervisor_contratista[0].supervisor;
-
-            //  self.gridOptions1.data = self.contratistas;
-
+              //Carga la información en la tabla
+              self.gridOptions1.data = self.contratos;
 
             });
 
