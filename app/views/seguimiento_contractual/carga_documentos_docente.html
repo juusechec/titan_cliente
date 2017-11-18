@@ -47,3 +47,48 @@
 
   </div>
 </div>
+
+<!--Modal que tiene los items del informe de gestión de los docentes-->
+<div id="modal_informe_gestion_docente" class="modal fade" role="dialog">
+  <div class="modal-content col-md-10 col-md-offset-1" style="margin-top: 5%">
+
+    <div class="modal-header">
+      <button type="button" class="btn btn-outline btn-danger btn-xs pull-right" data-dismiss="modal">&times</button><br>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">INFORME DE GESTIÓN DOCENTE</h3>
+        </div>
+        <div class="panel-body">
+          <fieldset class="form-group">
+            <label for="numerocontrato">HORAS LECTIVAS</label>
+            <input type="text" class="form-control" id="horas_lectivas" ng-model="cargaDocumentosDocente.objeto_modal.numero_contrato">
+          </fieldset>
+
+          <fieldset class="form-group">
+            <label for="vigencia">INVESTIGACIÓN</label>
+            <input type="text" class="form-control" id="investigacion" ng-model="cargaDocumentosDocente.objeto_modal.vigencia">
+          </fieldset>
+
+          <fieldset class="form-group">
+            <label for="cdp">EXTENSIÓN</label>
+            <input type="text" class="form-control" id="extension" ng-model="cargaDocumentosDocente.objeto_modal.cdp">
+          </fieldset>
+
+          <fieldset class="form-group">
+            <label for="fechacdp">PUBLICACIONES</label>
+            <input type="text" class="form-control" id="publicaciones" ng-model="cargaDocumentosDocente.objeto_modal.fecha_cdp">
+          </fieldset>
+
+          <fieldset class="form-group">
+            <label for="crp">OTRAS ACTIVIDADES ASIGNADAS POR EL COORDINADOR</label>
+            <textarea class="form-control" name="actividades_asignadas" rows="8" id="crp" ng-model="cargaDocumentosDocente.objeto_modal.crp"></textarea>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
