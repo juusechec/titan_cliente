@@ -68,7 +68,7 @@ angular.module('titanClienteV2App')
               field: 'Acciones',
               displayName: $translate.instant('ACC'),
               cellTemplate: ' <a type="button" title="Cargar listas" type="button" class="fa fa-upload fa-lg  faa-shake animated-hover" ng-if="!row.entity.validacion" ng-click="grid.appScope.aprobacionDocumentos.validarCumplido(row.entity)">' +
-              '</a>&nbsp;' + '<a type="button" title="Rechazar pago" type="button" class="fa fa-close fa-lg  faa-shake animated-hover"' +
+              '</a>&nbsp;' + '<a type="button" title="Informe de gestión docente" type="button" class="fa fa-eye fa-lg  faa-shake animated-hover"' +
               'ng-if="row.entity.Resolucion == \'TCO\' || row.entity.Resolucion ==\'MTO\'" ng-click="grid.appScope.aprobacionDocumentos.invalidarCumplido(row.entity)" data-toggle="modal" data-target="#modal_informe_gestion_docente"></a>',
 
               width: "10%"
@@ -137,10 +137,20 @@ angular.module('titanClienteV2App')
         /*
           Función para visualizar modal con los items preestablecidos para los docentes de TCO/MTO
         */
-        self.modalInformeDocente = function(){
+        self.obtenerInformeDocente = function(){
+        //Objeto que se obtiene el contenido del informe
+        var contenido = {
+              horas_lectivas: self.horas_lectivas,
+              investigacion: self.investigacion,
+              extension: self.extension,
+              publicaciones: self.publicaciones,
+              actividades: self.actividades
+          };
+
+          console.log(contenido);
 
 
-        }
+        };
 
     /*
       Función para cargar los documentos a la carpeta apache destino

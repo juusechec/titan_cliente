@@ -64,32 +64,34 @@
         </div>
         <div class="panel-body">
           <fieldset class="form-group">
-            <label for="numerocontrato">{{'HORAS_LEC' | translate}}</label>
-            <input type="text" class="form-control" id="horas_lectivas" ng-model="cargaDocumentosDocente.objeto_modal.numero_contrato">
+            <label for="horas_lectivas">{{'HORAS_LEC' | translate}}</label>
+            <input type="text" class="form-control" id="horas_lectivas" ng-model="cargaDocumentosDocente.horas_lectivas">
           </fieldset>
 
           <fieldset class="form-group">
-            <label for="vigencia">{{'INVESTIGACION' | translate }}</label>
-            <input type="text" class="form-control" id="investigacion" ng-model="cargaDocumentosDocente.objeto_modal.vigencia">
+            <label for="investigacion">{{'INVESTIGACION' | translate }}</label>
+            <input type="text" class="form-control" id="investigacion" ng-model="cargaDocumentosDocente.investigacion">
           </fieldset>
 
           <fieldset class="form-group">
-            <label for="cdp">{{'EXTENSION' | translate}}</label>
-            <input type="text" class="form-control" id="extension" ng-model="cargaDocumentosDocente.objeto_modal.cdp">
+            <label for="extension">{{'EXTENSION' | translate}}</label>
+            <input type="text" class="form-control" id="extension" ng-model="cargaDocumentosDocente.extension">
           </fieldset>
 
           <fieldset class="form-group">
-            <label for="fechacdp">{{'PUBLICACIONES' | translate}}</label>
-            <input type="text" class="form-control" id="publicaciones" ng-model="cargaDocumentosDocente.objeto_modal.fecha_cdp">
+            <label for="publicaciones">{{'PUBLICACIONES' | translate}}</label>
+            <input type="text" class="form-control" id="publicaciones" ng-model="cargaDocumentosDocente.publicaciones">
           </fieldset>
 
           <fieldset class="form-group">
-            <label for="crp">{{'ACTIVIDADES' | translate}}</label>
-            <textarea class="form-control" name="actividades_asignadas" rows="8" id="crp" ng-model="cargaDocumentosDocente.objeto_modal.crp"></textarea>
+            <label for="actividades">{{'ACTIVIDADES' | translate}}</label>
+            <textarea class="form-control" name="actividades_asignadas" rows="8" id="crp" ng-model="cargaDocumentosDocente.actividades"></textarea>
           </fieldset>
 
-          <button type="submit" >{{'ENVIAR' | translate}}</button>
+          <fieldset class="form-group col-lg-3" >
+            <input type="submit" class="form-control btn btn-success" align="center" value="{{'ENVIAR' | translate}}" ng-click="cargaDocumentosDocente.obtenerInformeDocente()">
 
+          </fieldset>
         </div>
       </div>
     </div>
