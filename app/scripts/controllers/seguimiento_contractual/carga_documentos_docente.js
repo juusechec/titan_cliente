@@ -15,6 +15,20 @@ angular.module('titanClienteV2App')
         //Se utiliza la variable self estandarizada
         var self = this;
 
+
+        self.meses = [
+        {Id:1, Nombre:"Enero"},
+        {Id:2, Nombre:"Febrero"},
+        {Id:3, Nombre:"Marzo"},
+        {Id:4, Nombre:"Abril"},
+        {Id:5, Nombre:"Mayo"},
+        {Id:6, Nombre:"Junio"},
+        {Id:7, Nombre:"Julio"},
+        {Id:8, Nombre:"Agosto"},
+        {Id:9, Nombre:"Septiembre"},
+        {Id:10, Nombre:"Octubre"},
+        {Id:11, Nombre:"Noviembre"},
+        {Id:12, Nombre:"Diciembre"}]
         /*
           Creación tabla que tendrá todos los contratos relacionados al docente
         */
@@ -67,9 +81,10 @@ angular.module('titanClienteV2App')
             {
               field: 'Acciones',
               displayName: $translate.instant('ACC'),
-              cellTemplate: ' <a type="button" title="Cargar listas" type="button" class="fa fa-upload fa-lg  faa-shake animated-hover" ng-if="!row.entity.validacion" ng-click="grid.appScope.aprobacionDocumentos.validarCumplido(row.entity)">' +
+              cellTemplate: ' <a type="button" title="Cargar listas" type="button" class="fa fa-upload fa-lg  faa-shake animated-hover" ng-if="!row.entity.validacion"  data-toggle="modal" data-target="#modal_carga_listas_docente">' +
               '</a>&nbsp;' + '<a type="button" title="Informe de gestión docente" type="button" class="fa fa-eye fa-lg  faa-shake animated-hover"' +
-              'ng-if="row.entity.Resolucion == \'TCO\' || row.entity.Resolucion ==\'MTO\'" ng-click="grid.appScope.aprobacionDocumentos.invalidarCumplido(row.entity)" data-toggle="modal" data-target="#modal_informe_gestion_docente"></a>',
+              'ng-if="row.entity.Resolucion == \'TCO\' || row.entity.Resolucion ==\'MTO\'" ng-click="grid.appScope.aprobacionDocumentos.invalidarCumplido(row.entity)" data-toggle="modal" data-target="#modal_informe_gestion_docente"></a>'+
+              '</a>&nbsp;' + '<a type="button" title="Solicitar pago" type="button" class="fa fa-money fa-lg  faa-shake animated-hover" ng-click="grid.appScope.cargaDocumentosDocente.solicitar_pago(row.entity)"   data-toggle="modal" data-target="#modal_enviar_solicitud" >' ,
 
               width: "10%"
             }
@@ -133,6 +148,40 @@ angular.module('titanClienteV2App')
           self.gridApi.core.refresh();
         };
 
+        self.solicitar_pago = function(contrato){
+          console.log(contrato);
+          self.contrato = contrato;
+
+        }
+
+
+        self.enviar_solicitud = function (){
+         
+          if(self.mes !== undefined){
+          var pago_mensual = {
+            CargoResponsable: "Prueba",
+            Estado: 1,
+            FechaModificacion: new Date(),
+            Mes: self.mes,
+            NumeroContrato: self.contrato.Num_vinculacion,
+            Persona: parseInt(self.Documento),
+            Responsable: "prueba",
+            VigenciaContrato: parseInt(self.contrato.Vigencia)
+          };
+
+          $http.post("http://10.20.2.159:8080/v1/pago_mensual/", pago_mensual);
+
+          console.log(pago_mensual);
+          self.contrato = {};
+        }else{
+         swal(
+          'Error',
+          'Debe seleccionar un mes',
+          'error'
+         );
+        }
+
+        };
 
         /*
           Función para visualizar modal con los items preestablecidos para los docentes de TCO/MTO

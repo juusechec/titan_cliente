@@ -28,17 +28,8 @@
 
             </form>
 
-            <div class="row">
-              <div class="col-md-3">
-                <label for="input_resumen" class="col-form-label">Seleccione el Documento</label>
-              </div>
-              <div class="col-md-9">
-                <input type='file' class="form-control" file-model='fileModel'>
-              </div>
-            </div>
-            <button ng-click="cargaDocumentosDocente.subir_documento()">
-        subir
-      </button>
+
+  
 
           </div>
         </div>
@@ -97,3 +88,78 @@
     </div>
   </div>
 </div>
+
+<div id="modal_carga_listas_docente" class="modal fade" role="dialog">
+  <div class="modal-content col-md-10 col-md-offset-1" style="margin-top: 5%">
+
+    <div class="modal-header">
+      <button type="button" class="btn btn-outline btn-danger btn-xs pull-right" data-dismiss="modal">&times</button><br>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{'TITULO_MODAL_INFORME_DOC' | translate}}</h3>
+        </div>
+        <div class="panel-body">
+
+          
+
+          <div class="row">
+
+            <div class="col-md-3">
+              <label for="input_resumen" class="col-form-label">Seleccione el Documento</label>
+            </div>
+            <div class="col-md-5">
+              <input type='file' class="form-control" file-model='fileModel'>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-success" ng-click="cargaDocumentosDocente.subir_documento()">
+          ENVIAR
+        </button>
+    </div>
+  </div>
+</div>
+
+
+<div id="modal_enviar_solicitud" class="modal fade" role="dialog">
+    <div class="modal-content col-md-10 col-md-offset-1" style="margin-top: 5%">
+  
+      <div class="modal-header">
+        <button type="button" class="btn btn-outline btn-danger btn-xs pull-right" data-dismiss="modal">&times</button><br>
+      </div>
+  
+      <div class="modal-body">
+  
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{'TITULO_MODAL_INFORME_DOC' | translate}}</h3>
+          </div>
+          <div class="panel-body">
+  
+            
+  
+            <div class="row">
+                <div class="col-md-1">
+                <label>Mes</label>
+                </div>
+                <div class="col-md-3">
+                <select ng-model="cargaDocumentosDocente.mes" class="form-control">
+                    <option ng-repeat="iMes in cargaDocumentosDocente.meses" ng-value="iMes.Id">{{iMes.Nombre}} </option>
+                </select>
+                </div>
+  
+            </div>
+          </div>
+        </div>
+  
+        <button class="btn btn-success" ng-click="cargaDocumentosDocente.enviar_solicitud()">
+            ENVIAR
+          </button>
+      </div>
+    </div>
+  </div>
