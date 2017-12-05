@@ -69,80 +69,83 @@ angular.module('titanClienteV2App')
       self.cumplido_informacion.valor_cobro = (self.valor_dia_contrato * self.dias_laborados);
     };
 
-    var fonts = {
-      Roboto: {
-        normal: 'fonts/Roboto-Regular.ttf',
-        bold: 'fonts/Roboto-Medium.ttf',
-        italics: 'fonts/Roboto-Italic.ttf',
-        bolditalics: 'fonts/Roboto-MediumItalic.ttf'
-      }
-    };
-    
-    /*var PdfPrinter = require('C:/Users/Sebastián/Documents/go/src/github.com/pdfmake/src/printer');
-    var printer = new PdfPrinter(fonts);
-    var fs = require('fs');*/
-    
+    /*
+      Función que contruye el documento en PDF
+    */
+    self.generarPDF = function (){
+
     var docDefinition = {
-    header: function() {  
-      
-                           return {  
-                               columns: [  
-                                   {  
-                                    text:'Csharp' ,  
-                                       width: 200,  
-                                       margin: [50, 20, 5, 5]  
-                                   },  
-                                   {  
-                                       stack: [  
-                                           { text: 'Project Details', alignment: 'right', fontSize: 12, margin: [0, 30, 50, 0] }  
-                                       ]  
-                                   }  
-                               ]  
-                           }  
-                       },  
+                       content: [
+                         {
+                            //Estilo para el header del PDF
+                            style: ['bottom_space'],
+                            text:[
+                              {text:'EL JEFE DE LA : ', bold: true,  alignment: 'center'}, '\n\n',
+                              {text:'DE LA UNIVERSIDAD DISTRITAL FRANCISCO JOSÉ DE CALDAS', bold: true,  alignment: 'center'}, '\n\n\n\n',
+                              {text:'CERTIFICA QUE: ', bold: true,  alignment: 'center'}, '\n\n\n\n\n\n'
+                            ]
+                        },
+                        {
+                             style:['general_font'],
+                             text:[
+                               'Que el señor(a) ' + self.cumplido_informacion.nombre_completo + ' identificado con la cédula de ciudadanía '+
+                               self.Documento + ' de ' + cumplido_informacion.Documento.ciudad + ', cumplió a satisfacción con el objeto establecido en el Contrato de Prestación de Servicios No. ' + self.cumplido.numero_contrato +
+                               ' del '+ self.cumplido_informacion.contrato.fecha + ', que dicho Contrato tiene disponibilidad presupuestal No 45541 del 25 de junio de 2017 y certificado de registro presupuestal No. 5087 del 25 de enero de 2017 ' +
+                               ' y con el pago reglamentario de los aportes al sistema de seguridad social del 1 al 31 de diciembre de 2017.', '\n\n',
 
-      content: [
-        'EL JEFE DE ASESORA DE SISTEMAS',
-        
-        'DE LA UNIVERSIDAD DISTRITAL FRANCISCO JOSÉ DE CALDAS',
-        
-        'CERTIFICA QUE:',
-        
-        'Que el señor JAVIER SEBASTIÁN REYES MOGOLLÓN, identificado con la cédula de ciudadanía ' +
-        'No 1.030.619.892 de Bogotá, cumplió a satisfacción con el objeto establecido en el Contrato de ' +
-        'Prestación de Servicios No. 1475 del 19 de julio de 2017, que dicho Contrato tiene ' +
-        'disponibilidad presupuestal No 2099 del 23 de Junio de 2017 y certificado de registro ' +
-        'presupuestal No. 5074 del 25 de Julio de 2017 y con el pago reglamentario de los aportes al ' +
-        'sistema de seguridad social del 1 al 30 de Noviembre de 2017.',
+                               'Que el valor causado por este concepto, es la suma de dos millones doscientos trece mil ciento cincuenta y un pesos MCTE ' +
+                               '($2,213,151), comprendido del 1 al 30 de Diciembre del año en curso.', '\n\n\n\n',
 
-        'Que el valor causado por este concepto, es la suma de dos millones doscientos trece mil ciento ' +
-        'cincuenta y un pesos MCTE. ($2,213,151), comprendido del 1 al 30 de Noviembre del año en curso.',
-        
-        cumplido_informacion.cuenta.tipo_cuenta +':' + cumplido_informacion.cuenta.numero + ' ' + cumplido_informacion.cuenta.banco +'',
-        
-        'Se expide para el trámite de pago ante la DIVISIÓN DE RECURSOS FINANCIEROS a los treinta' +
-        '(30) días del mes de Noviembre de 2017.',
-        
-        'Beatriz Elisa Jaramillo Moreno',
-        'Jefe Oficina Asesora de Sistemas',
-        
-        'Nota: Yo, JAVIER SEBASTIAN REYES MOGOLLON autorizo a la Universidad Distrital hacer el' +
-        'abono de mis pagos a la cuenta bancaria relacionada en este certificado. Bajo gravedad del' +
-        'juramento certifico que estoy realizando los aportes a seguridad social de conformidad con lo' +
-        'establecido por la Ley.',
-        
-        '------------------------------------------------' +
-        'Firma del contratista'
-      ]
+                               'CUENTA ' + self.cumplido_informacion.cuenta.tipo + ': ' + self.cumplido_informacion.cuenta.numero + ' ' + self.cumplido_informacion.cuenta.banco + '.', '\n\n\n\n',
+
+                               'Se expide para el trámite de pago ante la DIVISIÓN DE RECURSOS FINANCIEROS al mes de ' + self.cumplido_informacion.mes + 'de 2017.', '\n\n\n\n\n\n\n',
+
+                               {text: '' + cumplido_informacion.supervisor.nombre + '', bold: true,  alignment: 'center'}, '\n',
+                               {text: 'JEFE ' + cumplido_informacion.dependencia + '', bold: true,  alignment: 'center'}, '\n',
+
+
+                               'Nota: Yo, ' + self.cumplido_informacion.nombre_completo + ' autorizo a la Universidad Distrital hacer el abono de mis pagos a la cuenta bancaria ' +
+                               'relacionada en este certificado. Bajo gravedad del juramento certifico que estoy realizando los aportes a seguridad social ' +
+                               ' de conformidad con lo establecido por la Ley.', '\n\n\n',
+                             ]
+                           },
+                           {
+                             style:['general_font'],
+                             text:[
+                               '\n\n_____________________________________ \n',
+                               'Firma del contratista \n\n\n'
+                             ]
+                           },
+                         ],
+                         styles: {
+                           top_space: {
+                             fontSize: 11,
+                             marginTop: 30
+                           },
+                           bottom_space: {
+                             fontSize: 14,
+                             marginBottom: 30
+                           },
+                           general_font:{
+                             fontSize: 11,
+                             alignment: 'justify'
+                           }
+                         }
     };
-    
+
+    var date = new Date();
+    date = moment(date).format('DD_MMM_YYYY_HH_mm_ss');
+    pdfMake.createPdf(docDefinition).download('PDF_' + date + '.pdf');
+
+    console.log(self.cumplido_informacion);
+
+  };
+
     /*var pdfDoc = printer.createPdfKitDocument(docDefinition);
     pdfDoc.pipe(fs.createWriteStream('/background.pdf'));
     pdfDoc.end();*/
 
-    var date = new Date();  
-    date = moment(date).format('DD_MMM_YYYY_HH_mm_ss');  
-    pdfMake.createPdf(docDefinition).download('PDF_' + date + '.pdf'); 
+
    // pdfMake.createPdf(docDefinition).open();
 
    /* const pdfDocGenerator = pdfMake.createPdf(docDefinition);
@@ -153,6 +156,27 @@ angular.module('titanClienteV2App')
       targetElement.appendChild(iframe);
     });*/
 
+    /*table: {
+      widths:[65, '*', 120, 65],
+      body:[
+        [
+          '',
+          {text: 'ACTA DE CESIÓN', alignment: 'center', fontSize: 12},
+          {text: 'Código: GJ-PR- 002-FR- 010', fontSize: 9},
+          ''
+        ],
+        [ ' ',
+          {text: 'Macroproceso: Gestión administrativa y contratación', alignment: 'center', fontSize: 12},
+          {text: 'Versión: 01', fontSize: 9, margin: [0, 6]},
+          ' '
+        ],
+        [ ' ',
+          {text: 'Proceso: Gestión Jurídica', alignment: 'center', fontSize: 12, margin: [0, 3]},
+          {text: 'Fecha de Aprobación: 20/03/14', fontSize: 9},
+          ' '
+        ],
+      ]
+    }*/
 
 
 
