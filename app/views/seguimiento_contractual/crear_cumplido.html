@@ -116,19 +116,19 @@
 
                 <div class="form-group col-lg-8 col-lg-offset-2">
                     <label></label>
-                    <input type="submit" class="form-control btn btn-success" value="{{ 'GEN_CUMPLIDO' | translate }}" ng-click="resolucionGeneracion.crearResolucion()">
+                    <input type="submit" class="form-control btn btn-success" value="{{ 'GEN_CUMPLIDO' | translate }}" ng-click="crearCumplido.generarPDF()">
                 </div>
           </form>
         </div>
-      
 
-      <div class=" row col-lg-6" id="resolucion">
+
+      <div class=" row col-lg-6" id="cumplido">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="intro-text text-center">{{ 'VISTA_RESOLUCION' | translate }}</h4>
+                <h4 class="intro-text text-center">{{ 'VISTA_CUMPLIDO' | translate }}</h4>
             </div>
             <div class="panel-body">
-                <button type="submit" class="form-control btn-primary" ng-click="resolucionDetalle.generarResolucion()">{{ 'VISTA_RESOLUCION_ACTUALIZADA' | translate }}</button>
+                <button type="submit" class="form-control btn-primary" ng-click="crearCumplido.generarPDF()">{{ 'VISTA_CUMPLIDO_ACTUALIZADO' | translate }}</button>
                 <iframe id="vistaPDF" frameborder='0' width='100%' height='770'> </iframe>
             </div>
         </div>
