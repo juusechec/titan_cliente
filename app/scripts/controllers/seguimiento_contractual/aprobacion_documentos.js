@@ -8,7 +8,7 @@
  * Controller of the titanClienteV2App
  */
 angular.module('titanClienteV2App')
-  .controller('AprobacionDocumentosCtrl', function (oikosRequest, $http, uiGridConstants, contratoRequest, $translate) {
+  .controller('AprobacionDocumentosCtrl', function (oikosRequest, $http, uiGridConstants, contratoRequest, $translate, administrativaCrudService) {
     //Variable de template que permite la edición de las filas de acuerdo a la condición ng-if
     var tmpl = '<div ng-if="!row.entity.editable">{{COL_FIELD}}</div><div ng-if="row.entity.editable"><input ng-model="MODEL_COL_FIELD"</div>';
 
@@ -230,4 +230,15 @@ angular.module('titanClienteV2App')
 
 
         };
+
+        self.verificarDocumentos = function(contrato){
+
+          administrativaCrudService.get('soporte_pago_mensual',$.param({
+            query:"Vigente:" + true,
+            limit: 0
+    }))
+
+        }
+
+
   });
