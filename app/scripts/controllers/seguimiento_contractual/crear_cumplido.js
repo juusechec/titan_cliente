@@ -80,7 +80,7 @@ angular.module('titanClienteV2App')
                             //Estilo para el header del PDF
                             style: ['bottom_space'],
                             text:[
-                              {text:'EL JEFE DE LA : ', bold: true,  alignment: 'center'}, '\n\n',
+                              {text:'EL JEFE DE LA ' + self.cumplido_informacion.dependencia, bold: true,  alignment: 'center'}, '\n\n',
                               {text:'DE LA UNIVERSIDAD DISTRITAL FRANCISCO JOSÉ DE CALDAS', bold: true,  alignment: 'center'}, '\n\n\n\n',
                               {text:'CERTIFICA QUE: ', bold: true,  alignment: 'center'}, '\n\n\n\n\n\n'
                             ]
@@ -89,7 +89,7 @@ angular.module('titanClienteV2App')
                              style:['general_font'],
                              text:[
                                'Que el señor(a) ' + self.cumplido_informacion.nombre_completo + ' identificado con la cédula de ciudadanía '+
-                               self.Documento + ' de ' + cumplido_informacion.Documento.ciudad + ', cumplió a satisfacción con el objeto establecido en el Contrato de Prestación de Servicios No. ' + self.cumplido.numero_contrato +
+                               self.Documento + ' de ' + self.cumplido_informacion.Documento.ciudad + ', cumplió a satisfacción con el objeto establecido en el Contrato de Prestación de Servicios No. ' + self.cumplido.numero_contrato +
                                ' del '+ self.cumplido_informacion.contrato.fecha + ', que dicho Contrato tiene disponibilidad presupuestal No 45541 del 25 de junio de 2017 y certificado de registro presupuestal No. 5087 del 25 de enero de 2017 ' +
                                ' y con el pago reglamentario de los aportes al sistema de seguridad social del 1 al 31 de diciembre de 2017.', '\n\n',
 
@@ -98,10 +98,10 @@ angular.module('titanClienteV2App')
 
                                'CUENTA ' + self.cumplido_informacion.cuenta.tipo + ': ' + self.cumplido_informacion.cuenta.numero + ' ' + self.cumplido_informacion.cuenta.banco + '.', '\n\n\n\n',
 
-                               'Se expide para el trámite de pago ante la DIVISIÓN DE RECURSOS FINANCIEROS al mes de ' + self.cumplido_informacion.mes + 'de 2017.', '\n\n\n\n\n\n\n',
+                               'Se expide para el trámite de pago ante la DIVISIÓN DE RECURSOS FINANCIEROS al mes de ' + self.cumplido_informacion.mes + ' de 2017.', '\n\n\n\n\n\n\n',
 
-                               {text: '' + cumplido_informacion.supervisor.nombre + '', bold: true,  alignment: 'center'}, '\n',
-                               {text: 'JEFE ' + cumplido_informacion.dependencia + '', bold: true,  alignment: 'center'}, '\n',
+                               {text: '' + self.cumplido_informacion.supervisor.nombre + '', bold: true,  alignment: 'center'}, '\n',
+                               {text: 'JEFE ' + self.cumplido_informacion.dependencia + '', bold: true,  alignment: 'center'}, '\n\n\n',
 
 
                                'Nota: Yo, ' + self.cumplido_informacion.nombre_completo + ' autorizo a la Universidad Distrital hacer el abono de mis pagos a la cuenta bancaria ' +
@@ -137,7 +137,10 @@ angular.module('titanClienteV2App')
     date = moment(date).format('DD_MMM_YYYY_HH_mm_ss');
     pdfMake.createPdf(docDefinition).download('PDF_' + date + '.pdf');
 
-    console.log(self.cumplido_informacion);
+    pdfMake.createPdf(docDefinition).getDataUrl(function(outDoc){
+       document.getElementById('vistaPDF').src = outDoc;
+     });
+     $("#cumplido").show();
 
   };
 
