@@ -100,7 +100,7 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">{{'TITULO_MODAL_INFORME_DOC' | translate}}</h3>
+          <h3 class="panel-title">{{'CARGAR_LISTAS' | translate}}</h3>
         </div>
         <div class="panel-body">
 
@@ -109,7 +109,7 @@
           <div class="row">
 
             <div class="col-md-3">
-              <label for="input_resumen" class="col-form-label">Seleccione el Documento</label>
+              <label for="input_resumen" class="col-form-label">{{'SELECCIONAR_DOCUMENTO' | translate}}</label>
             </div>
             <div class="col-md-5">
               <input type='file' class="form-control" file-model='fileModel'>
@@ -119,7 +119,7 @@
       </div>
 
       <button class="btn btn-success" ng-click="cargaDocumentosDocente.subir_documento()">
-          ENVIAR
+          {{'ENVIAR' | translate }}
         </button>
     </div>
   </div>
@@ -137,7 +137,7 @@
   
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">{{'TITULO_MODAL_INFORME_DOC' | translate}}</h3>
+            <h3 class="panel-title">{{'CARGAR_LISTAS' | translate}}</h3>
           </div>
           <div class="panel-body">
   
@@ -145,7 +145,7 @@
   
             <div class="row">
                 <div class="col-md-1">
-                <label>Mes</label>
+                <label>{{'MES_PRELIQ' | translate }}</label>
                 </div>
                 <div class="col-md-3">
                 <select ng-model="cargaDocumentosDocente.mes" class="form-control">
@@ -158,7 +158,7 @@
         </div>
   
         <button class="btn btn-success" ng-click="cargaDocumentosDocente.enviar_solicitud()">
-            ENVIAR
+            {{'ENVIAR' | translate }}
           </button>
       </div>
     </div>
