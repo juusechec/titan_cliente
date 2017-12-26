@@ -8,13 +8,14 @@
  * Controller of the titanClienteV2App
  */
 angular.module('titanClienteV2App')
-  .controller('CargaDocumentosDocenteCtrl', function ($scope, $http, $translate, uiGridConstants, contratoRequest) {
+  .controller('CargaDocumentosDocenteCtrl', function ($scope, $http, $translate, uiGridConstants, contratoRequest,administrativaCrudService) {
     //Variable de template que permite la edición de las filas de acuerdo a la condición ng-if
     var tmpl = '<div ng-if="!row.entity.editable">{{COL_FIELD}}</div><div ng-if="row.entity.editable"><input ng-model="MODEL_COL_FIELD"</div>';
 
     //Se utiliza la variable self estandarizada
     var self = this;
 
+    self.anios = [];
 
     self.meses = [
       { Id: 1, Nombre: "Enero" },
@@ -81,7 +82,7 @@ angular.module('titanClienteV2App')
         {
           field: 'Acciones',
           displayName: $translate.instant('ACC'),
-          cellTemplate: ' <a type="button" title="{{\'CARGAR_LISTAS\'| translate }}" type="button" class="fa fa-upload fa-lg  faa-shake animated-hover" ng-if="!row.entity.validacion"  data-toggle="modal" data-target="#modal_carga_listas_docente">' +
+          cellTemplate: ' <a type="button" title="{{\'CARGAR_LISTAS\'| translate }}" type="button" class="fa fa-upload fa-lg  faa-shake animated-hover" ng-click="grid.appScope.cargaDocumentosDocente.cargar_soportes(row.entity)"  data-toggle="modal" data-target="#modal_carga_listas_docente">' +
           '</a>&nbsp;' + '<a type="button" title="Informe de gestión docente" type="button" class="fa fa-eye fa-lg  faa-shake animated-hover"' +
           'ng-if="row.entity.Resolucion == \'TCO\' || row.entity.Resolucion ==\'MTO\'" ng-click="grid.appScope.aprobacionDocumentos.invalidarCumplido(row.entity)" data-toggle="modal" data-target="#modal_informe_gestion_docente"></a>' +
           '</a>&nbsp;' + '<a type="button" title="{{\'SOLICITAR_PAGO\'| translate }}" type="button" class="fa fa-money fa-lg  faa-shake animated-hover" ng-click="grid.appScope.cargaDocumentosDocente.solicitar_pago(row.entity)"   data-toggle="modal" data-target="#modal_enviar_solicitud" >',
@@ -97,6 +98,72 @@ angular.module('titanClienteV2App')
       self.gridApi = gridApi;
     };
 
+
+
+
+
+    self.gridOptions2 = {
+      enableSorting: true,
+      enableFiltering: true,
+      resizable: true,
+      columnDefs: [
+        {
+          field: 'NumeroContrato',
+          cellTemplate: tmpl,
+          displayName: $translate.instant('NUM_VINC'),
+          sort: {
+            direction: uiGridConstants.ASC,
+            priority: 1
+          },
+          width: "25%"
+        },
+        {
+          field: 'VigenciaContrato',
+          cellTemplate: tmpl,
+          displayName: $translate.instant('VIGENCIA'),
+          sort: {
+            direction: uiGridConstants.ASC,
+            priority: 1
+          },
+          width: "20%"
+        },
+        {
+          field: 'Mes',
+          cellTemplate: tmpl,
+          displayName: 'Mes',
+          sort: {
+            direction: uiGridConstants.ASC,
+            priority: 1
+          },
+          width: "15  %"
+        }
+        ,
+        {
+          field: 'Ano',
+          cellTemplate: tmpl,
+          displayName: 'Año',
+          sort: {
+            direction: uiGridConstants.ASC,
+            priority: 1
+          },
+          width: "15  %"
+        }
+        ,
+        {
+          field: 'Acciones',
+          displayName: $translate.instant('ACC'),
+          cellTemplate: ' <a type="button" title="{{\'CARGAR_LISTAS\'| translate }}" type="button" class="fa fa-upload fa-lg  faa-shake animated-hover" ng-click="grid.appScope.cargaDocumentosDocente.cargar_soportes(row.entity)"  data-toggle="modal" data-target="#modal_carga_listas_docente">',
+
+          width: "15%"
+        }
+      ]
+    };
+
+
+
+    self.gridOptions2.onRegisterApi = function (gridApi) {
+      self.gridApi2 = gridApi;
+    };
     /*
       Función que recibe un objeto que posee un arreglo con información de los contratos que tiene el docente.
       Eśta función extrae el arreglo y los procesa para adicionar un atributo de validación.
@@ -145,31 +212,48 @@ angular.module('titanClienteV2App')
 
       }
 
-      self.gridApi.core.refresh();
+      self.gridApi2.core.refresh();
     };
 
     self.solicitar_pago = function (contrato) {
       console.log(contrato);
       self.contrato = contrato;
+      self.anios = [parseInt(self.contrato.Vigencia), parseInt(self.contrato.Vigencia)+1, parseInt(self.contrato.Vigencia)+2];
 
     }
+
+    
+    self.cargar_soportes  = function (contrato) {
+      self.gridOptions2.data = [];
+      self.contrato = contrato;
+      administrativaCrudService.get("pago_mensual",  $.param({
+        query: "NumeroContrato:" + self.contrato.Num_vinculacion + ",VigenciaContrato:" + self.contrato.Vigencia,
+        limit: 0
+      })).then(function (response) {
+
+        
+        self.gridOptions2.data = response.data;
+        console.log(self.gridOptions2.data);
+
+      });
+    };
 
 
     self.enviar_solicitud = function () {
 
-      if (self.mes !== undefined) {
+      if (self.mes !== undefined && self.anio !== undefined) {
         var pago_mensual = {
           CargoResponsable: "Prueba",
-          Estado: 1,
+          EstadoPagoMensual:{Id: 2},
           FechaModificacion: new Date(),
           Mes: self.mes,
+          Ano: self.anio,
           NumeroContrato: self.contrato.Num_vinculacion,
-          Persona: parseInt(self.Documento),
+          Persona: self.Documento,
           Responsable: "prueba",
           VigenciaContrato: parseInt(self.contrato.Vigencia)
         };
 
-        //     $http.post("pago_mensual", pago_mensual);
         administrativaCrudService.post("pago_mensual", pago_mensual);
 
         console.log(pago_mensual);
@@ -177,7 +261,7 @@ angular.module('titanClienteV2App')
       } else {
         swal(
           'Error',
-          'Debe seleccionar un mes',
+          'Debe seleccionar un mes y un año',
           'error'
         );
       }

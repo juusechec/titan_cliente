@@ -26,6 +26,7 @@ angular
     'ui.grid.treeView',
     'ui.grid.selection',
     'ui.grid.exporter',
+    'ui.grid.autoResize',
     'ngStorage',
     'ngWebSocket',
     'angularMoment',

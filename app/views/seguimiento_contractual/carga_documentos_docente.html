@@ -24,7 +24,12 @@
                 </div>
               </div>
 
+
+              <div class="row">
+
               <div style="height: {{gridHeight}}px;" ui-grid="cargaDocumentosDocente.gridOptions1" align='center' ui-grid-auto-resize></div>
+
+                </div>
 
             </form>
 
@@ -111,10 +116,27 @@
             <div class="col-md-3">
               <label for="input_resumen" class="col-form-label">{{'SELECCIONAR_DOCUMENTO' | translate}}</label>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-3">
               <input type='file' class="form-control" file-model='fileModel'>
             </div>
+            <div class="col-md-1">
+              <label for="select_item" class="col-form-label">Item</label>
+            </div>
+            <div class="col-md-3">
+              <select ng-model="cargaDocumentosDocente.mes" class="form-control">
+                  <option >Seleccione un item</option>
+              </select>
+            </div>  
+
           </div>
+
+
+          <div class="row">
+
+              <div style="height: {{gridHeight}}px;" ui-grid="cargaDocumentosDocente.gridOptions2" align='center' ui-grid-auto-resize></div>
+
+          </div>  
+        
         </div>
       </div>
 
@@ -151,8 +173,16 @@
                 <select ng-model="cargaDocumentosDocente.mes" class="form-control">
                     <option ng-repeat="iMes in cargaDocumentosDocente.meses" ng-value="iMes.Id">{{iMes.Nombre}} </option>
                 </select>
-                </div>
-  
+                </div>  
+
+                <div class="col-md-1">
+                    <label>{{'ANO_PRELIQ' | translate }}</label>
+                    </div>
+                    <div class="col-md-3">
+                    <select ng-model="cargaDocumentosDocente.anio" class="form-control">
+                        <option ng-repeat="iAnio in cargaDocumentosDocente.anios" ng-value="iAnio">{{iAnio}} </option>
+                    </select>
+                    </div>  
             </div>
           </div>
         </div>
