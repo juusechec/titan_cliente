@@ -34,7 +34,8 @@ angular
     'pascalprecht.translate',
     'titanService',
     'titanMidService',
-    'file-model'
+    'file-model',
+    'angularBootstrapFileinput'
   ])
     .run(function(amMoment) {
       amMoment.changeLocale('es');

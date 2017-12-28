@@ -8,7 +8,7 @@
  * Controller of the titanClienteV2App
  */
 angular.module('titanClienteV2App')
-  .controller('CargaDocumentosDocenteCtrl', function ($scope, $http, $translate, uiGridConstants, contratoRequest,administrativaCrudService) {
+  .controller('CargaDocumentosDocenteCtrl', function ($scope, $http, $translate, uiGridConstants, contratoRequest,administrativaCrudService,nuxeo, $q) {
     //Variable de template que permite la edición de las filas de acuerdo a la condición ng-if
     var tmpl = '<div ng-if="!row.entity.editable">{{COL_FIELD}}</div><div ng-if="row.entity.editable"><input ng-model="MODEL_COL_FIELD"</div>';
 
@@ -148,14 +148,6 @@ angular.module('titanClienteV2App')
           },
           width: "15  %"
         }
-        ,
-        {
-          field: 'Acciones',
-          displayName: $translate.instant('ACC'),
-          cellTemplate: ' <a type="button" title="{{\'CARGAR_LISTAS\'| translate }}" type="button" class="fa fa-upload fa-lg  faa-shake animated-hover" ng-click="grid.appScope.cargaDocumentosDocente.cargar_soportes(row.entity)"  data-toggle="modal" data-target="#modal_carga_listas_docente">',
-
-          width: "15%"
-        }
       ]
     };
 
@@ -287,25 +279,58 @@ angular.module('titanClienteV2App')
     };
 
     /*
-      Función para cargar los documentos a la carpeta apache destino
+      Función para cargar los documentos a la carpeta  destino
     */
-    self.fd = new FormData();
-    self.fd.append('file', $scope.fileModel);
-    self.fd.append('file_name', 'ejemplo.pdf');
-    self.subir_documento = function () {
-      console.log(self.fd);
-      $http.post("http://localhost:8082/upload", self.fd, {
-        transformRequest: angular.identity,
-        headers: { 'Content-Type': undefined }
-      })
-        .then(function (response) {
-          console.log("done");
-          console.log(response);
+    self.cargarDocumento = function(nombre, descripcion, documento ,callback){
+      var defered = $q.defer();
+      var promise = defered.promise;
+      nuxeo.operation('Document.Create')
+        .params({
+          type: 'File',
+          name: nombre,
+          properties: 'dc:title=' + nombre + ' \ndc:description=' + descripcion
+        })
+        .input('/default-domain/workspaces/Titán')
+        .execute()
+        .then(function(doc) {
+            var nuxeoBlob = new Nuxeo.Blob({ content: documento });
+            nuxeo.batchUpload()
+            .upload(nuxeoBlob)
+            .then(function(res) {
+              return nuxeo.operation('Blob.AttachOnDocument')
+                  .param('document', doc.uid)
+                  .input(res.blob)
+                  .execute();
+            })
+            .then(function() {
+              return nuxeo.repository().fetch(doc.uid, { schemas: ['dublincore', 'file'] });
+            })
+            .then(function(doc) {
+              var url = doc.uid;
+              callback(url);
+               defered.resolve(url);
+            })
+            .catch(function(error) {
+              throw error;
+              defered.reject(error)
+            });
+        })
+        .catch(function(error) {
+            throw error;
+            defered.reject(error)
         });
-      swal(
-        'Registro Existoso',
-        'El registro del documento ',
-        'success'
-      );
-    };
+
+        return promise;
+}
+
+self.subir_documento = function(){
+ var aux= self.cargarDocumento('prueba', 'probando', self.fileModel ,function(url){
+   // self.respuesta = url;
+   console.log(url);
+});
+ 
+console.log(aux);
+};
+
+
   });
