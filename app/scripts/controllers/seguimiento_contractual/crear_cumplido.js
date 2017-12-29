@@ -74,6 +74,7 @@ angular.module('titanClienteV2App')
     */
     self.generarPDF = function (){
 
+    //Generación documento
     var docDefinition = {
                        content: [
                          {
@@ -92,6 +93,8 @@ angular.module('titanClienteV2App')
                                self.Documento + ' de ' + self.cumplido_informacion.Documento.ciudad + ', cumplió a satisfacción con el objeto establecido en el Contrato de Prestación de Servicios No. ' + self.cumplido.numero_contrato +
                                ' del '+ self.cumplido_informacion.contrato.fecha + ', que dicho Contrato tiene disponibilidad presupuestal No 45541 del 25 de junio de 2017 y certificado de registro presupuestal No. 5087 del 25 de enero de 2017 ' +
                                ' y con el pago reglamentario de los aportes al sistema de seguridad social del 1 al 31 de diciembre de 2017.', '\n\n',
+
+                               '' + self.comprobar_contenido(self.parrafo_adicional) + '', '\n\n',
 
                                'Que el valor causado por este concepto, es la suma de dos millones doscientos trece mil ciento cincuenta y un pesos MCTE ' +
                                '($2,213,151), comprendido del 1 al 30 de Diciembre del año en curso.', '\n\n\n\n',
@@ -133,10 +136,14 @@ angular.module('titanClienteV2App')
                          }
     };
 
+    //Variable para obtener la fecha y hora que se genera el dcoumento
     var date = new Date();
     date = moment(date).format('DD_MMM_YYYY_HH_mm_ss');
-    pdfMake.createPdf(docDefinition).download('PDF_' + date + '.pdf');
 
+    //Sirve para descargar el documento y setearle el nombre
+    //pdfMake.createPdf(docDefinition).download('PDF_' + date + '.pdf');
+
+    //Le indica el iframe donde quiere se va a visualizar el cumplido generado
     pdfMake.createPdf(docDefinition).getDataUrl(function(outDoc){
        document.getElementById('vistaPDF').src = outDoc;
      });
@@ -144,48 +151,17 @@ angular.module('titanClienteV2App')
 
   };
 
-    /*var pdfDoc = printer.createPdfKitDocument(docDefinition);
-    pdfDoc.pipe(fs.createWriteStream('/background.pdf'));
-    pdfDoc.end();*/
+  /*
+    Función para comprobar el contenido del parrafo extra
+  */
+  self.comprobar_contenido = function(parrafo_adicional){
+    if (parrafo_adicional === undefined){
+      console.log("Entro");
+      parrafo_adicional = "";
+    }else{
+      parrafo_adicional = parrafo_adicional
+    }
+    return parrafo_adicional
+  };
 
-
-   // pdfMake.createPdf(docDefinition).open();
-
-   /* const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-    pdfDocGenerator.getDataUrl((dataUrl) => {
-      const targetElement = document.querySelector('#iframeContainer');
-      const iframe = document.createElement('vistaPDF');
-      iframe.src = dataUrl;
-      targetElement.appendChild(iframe);
-    });*/
-
-    /*table: {
-      widths:[65, '*', 120, 65],
-      body:[
-        [
-          '',
-          {text: 'ACTA DE CESIÓN', alignment: 'center', fontSize: 12},
-          {text: 'Código: GJ-PR- 002-FR- 010', fontSize: 9},
-          ''
-        ],
-        [ ' ',
-          {text: 'Macroproceso: Gestión administrativa y contratación', alignment: 'center', fontSize: 12},
-          {text: 'Versión: 01', fontSize: 9, margin: [0, 6]},
-          ' '
-        ],
-        [ ' ',
-          {text: 'Proceso: Gestión Jurídica', alignment: 'center', fontSize: 12, margin: [0, 3]},
-          {text: 'Fecha de Aprobación: 20/03/14', fontSize: 9},
-          ' '
-        ],
-      ]
-    }*/
-
-
-
-
-
-
-
-
-  });
+});

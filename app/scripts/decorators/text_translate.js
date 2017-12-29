@@ -225,6 +225,8 @@ var text_es = {
   DIA_FIN:"DÍA FIN",
   VISTA_CUMPLIDO: "VISUALIZACIÓN CUMPLIDO",
   VISTA_CUMPLIDO_ACTUALIZADO: "ACTUALIZAR VISUALIZACIÓN",
+  MEN_PARRA_EX:"Sí desea incluir un parrafo extra para agregar la fuente de financiamiento, de click en la siguiente casilla",
+  PARRAFO_EXTRA:"Parrafo extra",
 
   //MODULO INFORME DE GESTIÓN
   TITULO_REG_INFORME: "INFORME DE GESTIÓN",
@@ -498,6 +500,8 @@ var text_en = {
   DIA_FIN:"END DAY",
   VISTA_CUMPLIDO: "FULLY DISPLAYED",
   VISTA_CUMPLIDO_ACTUALIZADO: "UPDATE VISUALIZATION",
+  MEN_PARRA_EX:"If you want to include an extra paragraph to add the financing source, click on the following box",
+  PARRAFO_EXTRA:"Extra paragraph",
 
   //MODULO INFORME DE GESTIÓN
   TITULO_REG_INFORME:"MANAGEMENT REPORT",

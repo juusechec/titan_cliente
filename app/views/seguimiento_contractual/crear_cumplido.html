@@ -107,12 +107,20 @@
                 <label>{{ 'VALOR_COB' | translate }}</label><br>
                 <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.valor_cobro">
               </div><br>
-
-              <!--<div class="form-group col-lg-3">
-                  <input  type="submit" class="form-control btn btn-success" value="Consultar valor a cobrar" ng-click="crearCumplido.obtener_pago()">
-              </div>-->
-
         </div>
+
+
+
+                <div class="form-group col-lg-8 col-lg-offset-2">
+                  <!--Casilla de verificación para mostrar u ocultar el parrafo extra-->
+                  <label>{{ 'MEN_PARRA_EX' | translate }}:
+                        <input type="checkbox" ng-model="crearCumplido.checkboxModel.value1" ng-true-value="'YES'" ng-false-value="'NO'">
+                  </label><br/>
+
+                <!--Parrafo extra para incluir fuente de financiamiento-->
+                <label ng-if="crearCumplido.checkboxModel.value1 === 'YES'">{{ 'PARRAFO_EXTRA' | translate }}</label><br>
+                  <textarea ng-if="crearCumplido.checkboxModel.value1 === 'YES'" type="text" class="form-control" ng-model="crearCumplido.parrafo_adicional"></textarea>
+                </div>
 
                 <div class="form-group col-lg-8 col-lg-offset-2">
                     <label></label>
