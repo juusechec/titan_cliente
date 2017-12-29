@@ -113,11 +113,9 @@
 
           <div class="row">
 
-            <div class="col-md-3">
-              <label for="input_resumen" class="col-form-label">{{'SELECCIONAR_DOCUMENTO' | translate}}</label>
-            </div>
-            <div class="col-md-3">
-              <input type='file' class="form-control" file-model='fileModel'>
+            <label class="col-sm-3 control-label">Documentos</label>
+            <div class="col-sm-3 ">
+                <input type="file" angular-bfi="{'showUpload':false, allowedFileExtensions:['pdf'], language:'es'}" file-model="cargaDocumentosDocente.fileModel" required> </input>
             </div>
             <div class="col-md-1">
               <label for="select_item" class="col-form-label">Item</label>
@@ -130,7 +128,8 @@
 
           </div>
 
-
+          <br>
+          <br>
           <div class="row">
 
               <div style="height: {{gridHeight}}px;" ui-grid="cargaDocumentosDocente.gridOptions2" align='center' ui-grid-auto-resize></div>
