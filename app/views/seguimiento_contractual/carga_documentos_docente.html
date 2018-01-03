@@ -12,10 +12,11 @@
               <div class="row">
                 <div class="form-group col-lg-9">
                   <label>{{'NUM_DOC_IDENTIDAD'| translate}}</label>
-                  <input type="text" ng-model="cargaDocumentosDocente.Documento" class="form-control" placeholder="{{'PLACE_NUM_DOC'| translate}}" required>
+                  <input type="text" ng-model="cargaDocumentosDocente.Documento" class="form-control" placeholder="{{'PLACE_NUM_DOC'| translate}}"
+                    required>
                 </div>
                 <div class="form-group col-lg-3">
-                  <label>  </label>
+                  <label> </label>
                   <input type="submit" class="form-control btn btn-success" value="{{'ACCION_CONSULTAR_NUM_DOC' | translate}}" ng-click="cargaDocumentosDocente.obtener_informacion_docente()">
                 </div>
                 <div class="form-group col-lg-6">
@@ -27,15 +28,11 @@
 
               <div class="row">
 
-              <div style="height: {{gridHeight}}px;" ui-grid="cargaDocumentosDocente.gridOptions1" align='center' ui-grid-auto-resize></div>
+                <div style="height: {{gridHeight}}px;" ui-grid="cargaDocumentosDocente.gridOptions1" align='center' ui-grid-auto-resize></div>
 
-                </div>
+              </div>
 
             </form>
-
-
-  
-
           </div>
         </div>
       </div>
@@ -49,7 +46,8 @@
   <div class="modal-content col-md-10 col-md-offset-1" style="margin-top: 5%">
 
     <div class="modal-header">
-      <button type="button" class="btn btn-outline btn-danger btn-xs pull-right" data-dismiss="modal">&times</button><br>
+      <button type="button" class="btn btn-outline btn-danger btn-xs pull-right" data-dismiss="modal">&times</button>
+      <br>
     </div>
 
     <div class="modal-body">
@@ -84,7 +82,7 @@
             <textarea class="form-control" name="actividades_asignadas" rows="8" id="crp" ng-model="cargaDocumentosDocente.actividades"></textarea>
           </fieldset>
 
-          <fieldset class="form-group col-lg-3" >
+          <fieldset class="form-group col-lg-3">
             <input type="submit" class="form-control btn btn-success" align="center" value="{{'ENVIAR' | translate}}" ng-click="cargaDocumentosDocente.obtenerInformeDocente()">
 
           </fieldset>
@@ -98,7 +96,8 @@
   <div class="modal-content col-md-10 col-md-offset-1" style="margin-top: 5%">
 
     <div class="modal-header">
-      <button type="button" class="btn btn-outline btn-danger btn-xs pull-right" data-dismiss="modal">&times</button><br>
+      <button type="button" class="btn btn-outline btn-danger btn-xs pull-right" data-dismiss="modal">&times</button>
+      <br>
     </div>
 
     <div class="modal-body">
@@ -109,86 +108,90 @@
         </div>
         <div class="panel-body">
 
-          
+
+
 
           <div class="row">
 
-            <label class="col-sm-3 control-label">Documentos</label>
-            <div class="col-sm-3 ">
-                <input type="file" angular-bfi="{'showUpload':false, allowedFileExtensions:['pdf'], language:'es'}" file-model="cargaDocumentosDocente.fileModel" required> </input>
-            </div>
-            <div class="col-md-1">
-              <label for="select_item" class="col-form-label">Item</label>
-            </div>
-            <div class="col-md-3">
-              <select ng-model="cargaDocumentosDocente.mes" class="form-control">
-                  <option >Seleccione un item</option>
-              </select>
-            </div>  
+            <div style="height: {{gridHeight}}px;" ui-grid="cargaDocumentosDocente.gridOptions2" align='center' ui-grid-selection ui-grid-auto-resize></div>
 
           </div>
 
           <br>
           <br>
-          <div class="row">
 
-              <div style="height: {{gridHeight}}px;" ui-grid="cargaDocumentosDocente.gridOptions2" align='center' ui-grid-auto-resize></div>
+          <div class="row" ng-if="true" >
+            <label class="col-sm-3 control-label">Documentos</label>
+            <div class="col-sm-3 ">
+              <input type="file" angular-bfi="{'showUpload':false, allowedFileExtensions:['pdf'], language:'es'}" file-model="cargaDocumentosDocente.fileModel"
+                required> </input>
+            </div>
+            <div class="col-md-1">
+              <label for="select_item" class="col-form-label">Item</label>
+            </div>
+            <div class="col-md-3">
+              <select ng-model="cargaDocumentosDocente.item" class="form-control">
+                <option ng-repeat="iItem in cargaDocumentosDocente.items" ng-value="iItem.Id">{{iItem.ItemInforme.Nombre}} </option>
+              </select>
+            </div>
 
-          </div>  
-        
+          </div>
+
+
         </div>
       </div>
 
       <button class="btn btn-success" ng-click="cargaDocumentosDocente.subir_documento()">
-          {{'ENVIAR' | translate }}
-        </button>
+        {{'ENVIAR' | translate }}
+      </button>
     </div>
   </div>
 </div>
 
 
 <div id="modal_enviar_solicitud" class="modal fade" role="dialog">
-    <div class="modal-content col-md-10 col-md-offset-1" style="margin-top: 5%">
-  
-      <div class="modal-header">
-        <button type="button" class="btn btn-outline btn-danger btn-xs pull-right" data-dismiss="modal">&times</button><br>
-      </div>
-  
-      <div class="modal-body">
-  
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">{{'CARGAR_LISTAS' | translate}}</h3>
-          </div>
-          <div class="panel-body">
-  
-            
-  
-            <div class="row">
-                <div class="col-md-1">
-                <label>{{'MES_PRELIQ' | translate }}</label>
-                </div>
-                <div class="col-md-3">
-                <select ng-model="cargaDocumentosDocente.mes" class="form-control">
-                    <option ng-repeat="iMes in cargaDocumentosDocente.meses" ng-value="iMes.Id">{{iMes.Nombre}} </option>
-                </select>
-                </div>  
+  <div class="modal-content col-md-10 col-md-offset-1" style="margin-top: 5%">
 
-                <div class="col-md-1">
-                    <label>{{'ANO_PRELIQ' | translate }}</label>
-                    </div>
-                    <div class="col-md-3">
-                    <select ng-model="cargaDocumentosDocente.anio" class="form-control">
-                        <option ng-repeat="iAnio in cargaDocumentosDocente.anios" ng-value="iAnio">{{iAnio}} </option>
-                    </select>
-                    </div>  
+    <div class="modal-header">
+      <button type="button" class="btn btn-outline btn-danger btn-xs pull-right" data-dismiss="modal">&times</button>
+      <br>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{'CARGAR_LISTAS' | translate}}</h3>
+        </div>
+        <div class="panel-body">
+
+
+
+          <div class="row">
+            <div class="col-md-1">
+              <label>{{'MES_PRELIQ' | translate }}</label>
+            </div>
+            <div class="col-md-3">
+              <select ng-model="cargaDocumentosDocente.mes" class="form-control">
+                <option ng-repeat="iMes in cargaDocumentosDocente.meses" ng-value="iMes.Id">{{iMes.Nombre}} </option>
+              </select>
+            </div>
+
+            <div class="col-md-1">
+              <label>{{'ANO_PRELIQ' | translate }}</label>
+            </div>
+            <div class="col-md-3">
+              <select ng-model="cargaDocumentosDocente.anio" class="form-control">
+                <option ng-repeat="iAnio in cargaDocumentosDocente.anios" ng-value="iAnio">{{iAnio}} </option>
+              </select>
             </div>
           </div>
         </div>
-  
-        <button class="btn btn-success" ng-click="cargaDocumentosDocente.enviar_solicitud()">
-            {{'ENVIAR' | translate }}
-          </button>
       </div>
+
+      <button class="btn btn-success" ng-click="cargaDocumentosDocente.enviar_solicitud()">
+        {{'ENVIAR' | translate }}
+      </button>
     </div>
   </div>
+</div>

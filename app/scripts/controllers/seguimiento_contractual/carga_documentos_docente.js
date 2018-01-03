@@ -106,6 +106,7 @@ angular.module('titanClienteV2App')
       enableSorting: true,
       enableFiltering: true,
       resizable: true,
+      enableRowSelection: true,
       columnDefs: [
         {
           field: 'NumeroContrato',
@@ -152,9 +153,10 @@ angular.module('titanClienteV2App')
     };
 
 
-
+    self.gridOptions2.multiSelect = false;
     self.gridOptions2.onRegisterApi = function (gridApi) {
       self.gridApi2 = gridApi;
+      
     };
     /*
       Función que recibe un objeto que posee un arreglo con información de los contratos que tiene el docente.
@@ -223,7 +225,21 @@ angular.module('titanClienteV2App')
         limit: 0
       })).then(function (response) {
 
-        
+        contratoRequest.get('contrato_elaborado', self.contrato.Num_vinculacion+'/'+self.contrato.Vigencia).then(function (response_ce) {
+
+         self.tipo_contrato= response_ce.data.contrato.tipo_contrato;
+
+        administrativaCrudService.get("item_informe_tipo_contrato",  $.param({
+          query: "TipoContrato:" + self.tipo_contrato,
+          limit: 0
+        })).then(function(response_iitc){
+
+        self.items = response_iitc.data;
+
+        });
+
+      });
+
         self.gridOptions2.data = response.data;
         console.log(self.gridOptions2.data);
 
@@ -246,10 +262,47 @@ angular.module('titanClienteV2App')
           VigenciaContrato: parseInt(self.contrato.Vigencia)
         };
 
-        administrativaCrudService.post("pago_mensual", pago_mensual);
+        administrativaCrudService.get("pago_mensual",$.param({
+          query: "NumeroContrato:" + self.contrato.Num_vinculacion 
+          + ",VigenciaContrato:" + self.contrato.Vigencia 
+          + ",Mes:" + self.mes 
+          + ",Ano:" + self.anio
+          ,
+          limit: 0
+        })).then(function(response){
+        
+        
 
-        console.log(pago_mensual);
-        self.contrato = {};
+          if(response.data==null){
+            
+        administrativaCrudService.post("pago_mensual", pago_mensual).then(function(response){
+
+         console.log(response.data);
+         swal(
+          'Solicitud registrada',
+          'Por favor cargue los soportes correspondientes',
+          'success'
+        )
+
+         self.contrato = {};
+
+        });
+
+          }else{
+              
+            swal(
+              'Error',
+              'Ya existe una solicitud de pago para el año y mes dados',
+              'error'
+            );
+
+          }
+           
+        });
+
+
+
+      //  console.log(pago_mensual);
       } else {
         swal(
           'Error',
@@ -324,7 +377,7 @@ angular.module('titanClienteV2App')
 }
 
 self.subir_documento = function(){
- var aux= self.cargarDocumento('prueba', 'probando', self.fileModel ,function(url){
+ var aux= self.cargarDocumento('prueba','probando', self.fileModel ,function(url){
    // self.respuesta = url;
    console.log(url);
 });
