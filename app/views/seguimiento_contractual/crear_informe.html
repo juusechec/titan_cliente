@@ -20,11 +20,11 @@
               </div>
               <div class="form-group col-lg-6">
                 <label>{{ 'NAME_CONTRATISTA' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearInforme.informe.Nombre" required>
+                <input type="text" class="form-control" ng-model="crearInforme.informe_informacion.nombre_completo">
               </div>
               <div class="form-group col-lg-6">
                 <label>{{ 'INFORME_MES' | translate }}</label>
-                <select class="form-control"  ng-model="crearInforme.informe.Mes" required>
+                <select class="form-control"  ng-model="crearInforme.informe_informacion.Mes" required>
                        <option value="">{{ 'PLACE_MES' | translate }}</option>
                        <option value="ENERO">ENERO</option>
                        <option value="FEBRERO">FEBRERO</option>
@@ -42,13 +42,12 @@
               </div>
               <div class="form-group col-lg-6">
                 <label>{{ 'FECH_SUSC_CONT' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearInforme.informe.Fecha_suscripcion" required>
+                <input type="text" class="form-control" ng-model="crearInforme.informe_informacion.contrato.fecha">
               </div>
+
               <div class="form-group col-lg-6">
                 <label>{{ 'DEPENDENCIA' | translate }}</label>
-                <select class="form-control"  ng-model="crearInforme.informe.Dependencia" ng-options="option.Nombre for option in crearInforme.dependencias">
-                      <option value="">{{'TEXT_DEPEN' | translate}}</option>
-                </select>
+                <input type="text" class="form-control" ng-model="crearInforme.informe_informacion.dependencia">
               </div>
 
               <div class="form-group col-lg-6">
@@ -61,7 +60,7 @@
               </div>
               <div class="form-group col-lg-12">
                   <label>{{ 'OBJETO_CONTRACT' | translate }}</label>
-                  <textarea rows="7" class="form-control" ng-model="crearInforme.informe.Objeto" required></textarea>
+                  <textarea rows="7" class="form-control" ng-model="crearInforme.informe_informacion.contrato.objeto" required></textarea>
               </div>
               </div>
           </form>
@@ -74,7 +73,7 @@
 
                 <div class="form-group col-lg-8 col-lg-offset-2">
                     <label></label>
-                    <input type="submit" class="form-control btn btn-success" value="{{ 'GEN_INFORME' | translate }}" ng-click="resolucionGeneracion.crearResolucion()">
+                    <input type="submit" class="form-control btn btn-success" value="{{ 'GEN_INFORME' | translate }}" ng-click="">
                 </div>
           </form>
         </div>

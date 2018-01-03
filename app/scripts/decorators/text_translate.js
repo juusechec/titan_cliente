@@ -244,6 +244,9 @@ var text_es = {
   NIV_AVAN:"NIVEL DE AVANCE",
   TEXT_DEPEN:"-- Elija la dependencia a la que pertenece --",
   ACC:"ACCIONES",
+  EDITAR:"EDITAR",
+  ELIMINAR:"ELIMINAR REGISTRO",
+
 
   //Módulo aprobación documentos
   TITULO_APRO_DOC: "APROBACIÓN DOCUMENTOS NÓMINA",
@@ -519,6 +522,8 @@ var text_en = {
   NIV_AVAN:"ADVANCE LEVEL",
   TEXT_DEPEN:"-- Choose the dependence to which it belongs --",
   ACC:"ACTIONS",
+  EDITAR:"EDIT",
+  ELIMINAR:"DELETE RECORD",
 
   //Módulo aprobación documentos
   TITULO_APRO_DOC: "APPROVAL OF PAYROLL DOCUMENTS",
