@@ -156,7 +156,12 @@ angular.module('titanClienteV2App')
     self.gridOptions2.multiSelect = false;
     self.gridOptions2.onRegisterApi = function (gridApi) {
       self.gridApi2 = gridApi;
-      
+      self.seleccionados = self.gridApi2.selection.selectedCount;
+      self.gridApi2.selection.on.rowSelectionChanged($scope, function(row){
+
+        //self.seleccionados = self.gridApi2.selection.selectedCount;
+       self.seleccionado = row.isSelected;
+      });
     };
     /*
       Función que recibe un objeto que posee un arreglo con información de los contratos que tiene el docente.
@@ -218,6 +223,7 @@ angular.module('titanClienteV2App')
 
     
     self.cargar_soportes  = function (contrato) {
+      self.seleccionado = false;
       self.gridOptions2.data = [];
       self.contrato = contrato;
       administrativaCrudService.get("pago_mensual",  $.param({
