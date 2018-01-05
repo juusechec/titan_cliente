@@ -233,7 +233,14 @@ angular.module('titanClienteV2App')
           "Nombre": "Cargar listas",
           "Url": "seguimiento_contractual/carga_documentos_docente",
           "Opciones": null
+        },
+        { //Aprobación coordinador
+          "Id": 1,
+          "Nombre": "Revisión coordinador",
+          "Url": "seguimiento_contractual/aprobacion_coordinador",
+          "Opciones": null
         }
+
       ]
     }
 

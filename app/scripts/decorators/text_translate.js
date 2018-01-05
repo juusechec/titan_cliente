@@ -268,6 +268,8 @@ var text_es = {
   SOLICITAR_PAGO:"SOLICITAR PAGO",
   CARGAR_LISTAS:"CARGAR LISTAS",
   SELECCIONAR_DOCUMENTO:"Seleccione el documento",
+  PARRAFO_SOLICITAR_PAGO:"Seleccione el mes y el año de la solicitud de pago a realizar",
+  PARRAFO_CARGAR_LISTAS:"Seleccione la solicitud de pago a la que le va a cargar los soportes.",
 
 
   //Modal informe de gestión docente
@@ -277,7 +279,13 @@ var text_es = {
   EXTENSION:"EXTENSIÓN",
   PUBLICACIONES:"PUBLICACIONES",
   ACTIVIDADES:"OTRAS ACTIVIDADES ASIGNADAS POR EL COORDINADOR",
-  ENVIAR:"ENVIAR"
+  ENVIAR:"ENVIAR",
+
+  //Revisión COORDINADOR
+  TITULO_REV_COO: "REVISIÓN COORDINADOR",
+  NOM_COOR:"NOMBRE COORDINADOR",
+  NAME_TEACHER:"NOMBRE PROFESOR" ,
+  VISU_DOCS:"VER DOCUMENTOS"
 
 };
 
@@ -545,6 +553,8 @@ var text_en = {
   SOLICITAR_PAGO:"REQUEST PAYMENT",
   CARGAR_LISTAS:"UPLOAD LISTS",
   SELECCIONAR_DOCUMENTO:"Select the document",
+  PARRAFO_SOLICITAR_PAGO:"Select the month and year of the payment request to be made",
+  PARRAFO_CARGAR_LISTAS:"Select the payment request to which the media will be charged.",
 
   //Modal informe de gestión docente
   TITULO_MODAL_INFORME_DOC:"TEACHER MANAGEMENT REPORT",
@@ -553,7 +563,13 @@ var text_en = {
   EXTENSION:"EXTENSION",
   PUBLICACIONES:"PUBLICATIONS",
   ACTIVIDADES:"OTHER ACTIVITIES ASSIGNED BY THE COORDINATOR",
-  ENVIAR: "SEND"
+  ENVIAR: "SEND",
+
+  //Revisión COORDINADOR
+  TITULO_REV_COO: "COORDINATOR REVIEW",
+  NOM_COOR:"COORDINATOR NAME",
+  NAME_TEACHER:"TEACHER NAME" ,
+  VISU_DOCS:"VIEW DOCUMENTS"
 
 };
 
