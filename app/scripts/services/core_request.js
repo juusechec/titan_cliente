@@ -10,7 +10,7 @@
 angular.module('titanClienteV2App')
   .factory('coreRequest', function ($http) {
     // Service logic
-    var path = "http://127.0.0.1:8080/v1/";
+    var path = "http://10.20.0.254/core_api/v1/";
     // Public API here
     return {
       get: function (tabla,params) {
