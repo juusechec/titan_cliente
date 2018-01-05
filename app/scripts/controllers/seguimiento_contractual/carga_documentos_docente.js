@@ -8,7 +8,7 @@
  * Controller of the titanClienteV2App
  */
 angular.module('titanClienteV2App')
-  .controller('CargaDocumentosDocenteCtrl', function ($scope, $http, $translate, uiGridConstants, contratoRequest,administrativaCrudService,nuxeo, $q) {
+  .controller('CargaDocumentosDocenteCtrl', function ($scope, $http, $translate, uiGridConstants, contratoRequest,administrativaCrudService,nuxeo, $q, coreRequest) {
     //Variable de template que permite la edición de las filas de acuerdo a la condición ng-if
     var tmpl = '<div ng-if="!row.entity.editable">{{COL_FIELD}}</div><div ng-if="row.entity.editable"><input ng-model="MODEL_COL_FIELD"</div>';
 
@@ -161,6 +161,10 @@ angular.module('titanClienteV2App')
 
         //self.seleccionados = self.gridApi2.selection.selectedCount;
        self.seleccionado = row.isSelected;
+       //Condiciuonal para capturar la información de la fila seleccionado
+       if (self.seleccionado){
+         self.fila_seleccionada = row.entity;
+       }
       });
     };
     /*
@@ -214,6 +218,9 @@ angular.module('titanClienteV2App')
       self.gridApi2.core.refresh();
     };
 
+    /*
+    Función que permite realizar una solicitud de pago mensual
+    */
     self.solicitar_pago = function (contrato) {
       console.log(contrato);
       self.contrato = contrato;
@@ -221,7 +228,7 @@ angular.module('titanClienteV2App')
 
     }
 
-    
+
     self.cargar_soportes  = function (contrato) {
       self.seleccionado = false;
       self.gridOptions2.data = [];
@@ -269,18 +276,18 @@ angular.module('titanClienteV2App')
         };
 
         administrativaCrudService.get("pago_mensual",$.param({
-          query: "NumeroContrato:" + self.contrato.Num_vinculacion 
-          + ",VigenciaContrato:" + self.contrato.Vigencia 
-          + ",Mes:" + self.mes 
+          query: "NumeroContrato:" + self.contrato.Num_vinculacion
+          + ",VigenciaContrato:" + self.contrato.Vigencia
+          + ",Mes:" + self.mes
           + ",Ano:" + self.anio
           ,
           limit: 0
         })).then(function(response){
-        
-        
+
+
 
           if(response.data==null){
-            
+
         administrativaCrudService.post("pago_mensual", pago_mensual).then(function(response){
 
          console.log(response.data);
@@ -295,7 +302,7 @@ angular.module('titanClienteV2App')
         });
 
           }else{
-              
+
             swal(
               'Error',
               'Ya existe una solicitud de pago para el año y mes dados',
@@ -303,7 +310,7 @@ angular.module('titanClienteV2App')
             );
 
           }
-           
+
         });
 
 
@@ -343,6 +350,7 @@ angular.module('titanClienteV2App')
     self.cargarDocumento = function(nombre, descripcion, documento ,callback){
       var defered = $q.defer();
       var promise = defered.promise;
+
       nuxeo.operation('Document.Create')
         .params({
           type: 'File',
@@ -383,12 +391,47 @@ angular.module('titanClienteV2App')
 }
 
 self.subir_documento = function(){
- var aux= self.cargarDocumento('prueba','probando', self.fileModel ,function(url){
-   // self.respuesta = url;
-   console.log(url);
+
+  var nombre_doc = self.contrato.Vigencia + self.contrato.Num_vinculacion + self.Documento + self.fila_seleccionada.Mes + self.fila_seleccionada.Ano;
+  var descripcion = self.item.ItemInforme.Nombre;
+  var aux = self.cargarDocumento(nombre_doc,descripcion, self.fileModel ,function(url){
+
+  //Objeto documento
+  self.objeto_documento = {
+    "Nombre": nombre_doc,
+    "Descripcion":descripcion,
+    "TipoDocumento": {"Id":3},
+    "Contenido":JSON.stringify({"Tipo":"Archivo", "IdNuxeo": url}),
+    "Activo":true
+  };
+
+  console.log(self.objeto_documento);
+
+    //Post a la tabla documento del core
+    coreRequest.post('documento', self.objeto_documento)
+    .then(function(response){
+      self.id_documento =response.data.Id;
+
+      //Objeto soporte_pago_mensual
+      self.objeto_soporte = {
+        "PagoMensual": {"Id": self.fila_seleccionada.Id},
+        "Documento": self.id_documento,
+        "ItemInformeTipoContrato": {"Id":self.item.Id},
+        "Aprobado":false
+      };
+
+      //Post a la tabla soporte documento
+      administrativaCrudService.post('soporte_pago_mensual', self.objeto_soporte)
+      .then(function(response){
+        //Bandera de validacion
+        console.log("Se ha registrado el documento en el soporte mensual");
+      });
+    });
+
+
 });
- 
-console.log(aux);
+
+
 };
 
 
