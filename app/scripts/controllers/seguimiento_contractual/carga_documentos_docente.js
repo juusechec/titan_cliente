@@ -82,11 +82,8 @@ angular.module('titanClienteV2App')
         {
           field: 'Acciones',
           displayName: $translate.instant('ACC'),
-          cellTemplate: ' <a type="button" title="{{\'CARGAR_LISTAS\'| translate }}" type="button" class="fa fa-upload fa-lg  faa-shake animated-hover" ng-click="grid.appScope.cargaDocumentosDocente.cargar_soportes(row.entity)"  data-toggle="modal" data-target="#modal_carga_listas_docente">' +
-          '</a>&nbsp;' + '<a type="button" title="Informe de gestión docente" type="button" class="fa fa-eye fa-lg  faa-shake animated-hover"' +
-          'ng-if="row.entity.Resolucion == \'TCO\' || row.entity.Resolucion ==\'MTO\'" ng-click="grid.appScope.aprobacionDocumentos.invalidarCumplido(row.entity)" data-toggle="modal" data-target="#modal_informe_gestion_docente"></a>' +
-          '</a>&nbsp;' + '<a type="button" title="{{\'SOLICITAR_PAGO\'| translate }}" type="button" class="fa fa-money fa-lg  faa-shake animated-hover" ng-click="grid.appScope.cargaDocumentosDocente.solicitar_pago(row.entity)"   data-toggle="modal" data-target="#modal_enviar_solicitud" >',
-
+          cellTemplate: '<a type="button" title="{{\'SOLICITAR_PAGO\'| translate }}" type="button" class="fa fa-money fa-lg  faa-shake animated-hover" ng-click="grid.appScope.cargaDocumentosDocente.solicitar_pago(row.entity)"   data-toggle="modal" data-target="#modal_enviar_solicitud" >' +
+          '</a>&nbsp;' + ' <a type="button" title="{{\'CARGAR_LISTAS\'| translate }}" type="button" class="fa fa-upload fa-lg  faa-shake animated-hover" ng-click="grid.appScope.cargaDocumentosDocente.cargar_soportes(row.entity)"  data-toggle="modal" data-target="#modal_carga_listas_docente">',
           width: "10%"
         }
       ]
@@ -116,7 +113,6 @@ angular.module('titanClienteV2App')
             direction: uiGridConstants.ASC,
             priority: 1
           },
-          width: "25%"
         },
         {
           field: 'VigenciaContrato',
@@ -126,7 +122,6 @@ angular.module('titanClienteV2App')
             direction: uiGridConstants.ASC,
             priority: 1
           },
-          width: "20%"
         },
         {
           field: 'Mes',
@@ -136,7 +131,6 @@ angular.module('titanClienteV2App')
             direction: uiGridConstants.ASC,
             priority: 1
           },
-          width: "15  %"
         }
         ,
         {
@@ -147,7 +141,6 @@ angular.module('titanClienteV2App')
             direction: uiGridConstants.ASC,
             priority: 1
           },
-          width: "15  %"
         }
       ]
     };

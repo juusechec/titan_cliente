@@ -101,21 +101,23 @@
     </div>
 
     <div class="modal-body">
-
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">{{'CARGAR_LISTAS' | translate}}</h3>
         </div>
+
+        <br>
+        
+        <div class="col-md-12">
+          <p>{{'PARRAFO_CARGAR_LISTAS' | translate }}</p>
+        </div>
+
+        <br>
+
+
         <div class="panel-body">
 
-
-
-
-          <div class="row">
-
-            <div style="height: {{gridHeight}}px;" ui-grid="cargaDocumentosDocente.gridOptions2" align='center' ui-grid-selection ui-grid-auto-resize></div>
-
-          </div>
+            <div style="height: {{gridHeight}}px;width:{{gridWidth}}px" ui-grid="cargaDocumentosDocente.gridOptions2" align='center' ui-grid-selection ui-grid-auto-resize></div>
 
           <br>
           <br>
@@ -161,13 +163,18 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">{{'CARGAR_LISTAS' | translate}}</h3>
+          <h3 class="panel-title">{{'SOLICITAR_PAGO' | translate}}</h3>
         </div>
         <div class="panel-body">
 
 
 
           <div class="row">
+
+            <div class="col-md-12">
+              <p>{{'PARRAFO_SOLICITAR_PAGO' | translate }}</p>
+            </div>
+
             <div class="col-md-1">
               <label>{{'MES_PRELIQ' | translate }}</label>
             </div>
