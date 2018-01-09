@@ -387,6 +387,8 @@ self.subir_documento = function(){
 
   var nombre_doc = self.contrato.Vigencia + self.contrato.Num_vinculacion + self.Documento + self.fila_seleccionada.Mes + self.fila_seleccionada.Ano;
   var descripcion = self.item.ItemInforme.Nombre;
+
+  if(self.archivo){
   var aux = self.cargarDocumento(nombre_doc,descripcion, self.fileModel ,function(url){
 
   //Objeto documento
@@ -394,7 +396,7 @@ self.subir_documento = function(){
     "Nombre": nombre_doc,
     "Descripcion":descripcion,
     "TipoDocumento": {"Id":3},
-    "Contenido":JSON.stringify({"Tipo":"Archivo", "IdNuxeo": url}),
+    "Contenido":JSON.stringify({"Tipo":"Archivo", "IdNuxeo": url, "Observaciones": self.observaciones}),
     "Activo":true
   };
 
@@ -424,8 +426,57 @@ self.subir_documento = function(){
 
 });
 
+  }else if(self.link){
+
+
+  //Objeto documento
+  self.objeto_documento = {
+    "Nombre": nombre_doc,
+    "Descripcion":descripcion,
+    "TipoDocumento": {"Id":3},
+    "Contenido":JSON.stringify({"Tipo":"Enlace", "Enlace": self.enlace, "Observaciones": self.observaciones}),
+    "Activo":true
+  };
+
+  console.log(self.objeto_documento);
+
+    //Post a la tabla documento del core
+    coreRequest.post('documento', self.objeto_documento)
+    .then(function(response){
+      self.id_documento =response.data.Id;
+
+      //Objeto soporte_pago_mensual
+      self.objeto_soporte = {
+        "PagoMensual": {"Id": self.fila_seleccionada.Id},
+        "Documento": self.id_documento,
+        "ItemInformeTipoContrato": {"Id":self.item.Id},
+        "Aprobado":false
+      };
+
+      //Post a la tabla soporte documento
+      administrativaCrudService.post('soporte_pago_mensual', self.objeto_soporte)
+      .then(function(response){
+        //Bandera de validacion
+        console.log("Se ha registrado el documento en el soporte mensual");
+      });
+    });
+
+  }
+
 
 };
 
+
+self.cambiarCheckArchivo = function(){
+    if(self.archivo){
+      self.link=false;
+    }
+};
+
+self.cambiarCheckLink = function(){
+  if(self.link){
+    self.archivo=false;
+  }
+};
 
   });

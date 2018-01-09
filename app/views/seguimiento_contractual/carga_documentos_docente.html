@@ -107,7 +107,7 @@
         </div>
 
         <br>
-        
+
         <div class="col-md-12">
           <p>{{'PARRAFO_CARGAR_LISTAS' | translate }}</p>
         </div>
@@ -117,24 +117,60 @@
 
         <div class="panel-body">
 
-            <div style="height: {{gridHeight}}px;width:{{gridWidth}}px" ui-grid="cargaDocumentosDocente.gridOptions2" align='center' ui-grid-selection ui-grid-auto-resize></div>
+          <div style="height: {{gridHeight}}px;width:{{gridWidth}}px" ui-grid="cargaDocumentosDocente.gridOptions2" align='center'
+            ui-grid-selection ui-grid-auto-resize></div>
 
           <br>
           <br>
 
-          <div class="row" ng-if="cargaDocumentosDocente.seleccionado" >
-            <label class="col-sm-3 control-label">Documentos</label>
-            <div class="col-sm-3 ">
-              <input type="file" angular-bfi="{'showUpload':false, allowedFileExtensions:['pdf'], language:'es'}" file-model="cargaDocumentosDocente.fileModel"
-                required> </input>
+          <div class="row" ng-if="cargaDocumentosDocente.seleccionado">
+
+            <div class="row">
+            <label> Archivo:
+              <input type="checkbox" ng-model="cargaDocumentosDocente.archivo" ng-change="cargaDocumentosDocente.cambiarCheckArchivo()">
+            </label>
+
+            <label> Enlace:
+              <input type="checkbox" ng-model="cargaDocumentosDocente.link"  ng-change="cargaDocumentosDocente.cambiarCheckLink()">
+            </label>
+           </div>
+
+
+
+            <div ng-if="cargaDocumentosDocente.archivo">
+
+              <div class="col-md-1">
+                <label class="control-label">Documentos</label>
+              </div>
+              <div class="col-md-2">
+                <input type="file" angular-bfi="{'showUpload':false, allowedFileExtensions:['pdf'], language:'es'}" file-model="cargaDocumentosDocente.fileModel"
+                  required> </input>
+              </div>
             </div>
-            <div class="col-md-1">
+
+            <div ng-if="cargaDocumentosDocente.link">
+              <div class="col-md-1">
+                <label class="control-label">Enlace</label>
+              </div>
+              <div class="col-md-2">
+                <input type="text" class="form-control"  ng-model="cargaDocumentosDocente.enlace" required> </input>
+              </div>
+
+            </div>
+
+            <div class="col-md-2">
               <label for="select_item" class="col-form-label">Item</label>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
               <select ng-model="cargaDocumentosDocente.item" class="form-control">
                 <option ng-repeat="iItem in cargaDocumentosDocente.items" ng-value="iItem">{{iItem.ItemInforme.Nombre}} </option>
               </select>
+            </div>
+            <div class="col-md-2">
+              <label for="observacion" class="col-form-label">Observaciones</label>
+            </div>
+            <div class="col-md-3">
+              <textarea ng-model="cargaDocumentosDocente.observaciones"></textarea>
             </div>
 
           </div>
