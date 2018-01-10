@@ -26,7 +26,7 @@ angular.module('titanClienteV2App')
       rowHeight: 40,
       columnDefs: [
         {
-          field: 'num_documento',
+          field: 'Persona',
           cellTemplate: tmpl,
           displayName: $translate.instant('DOCUMENTO'),
           sort: {
@@ -55,7 +55,7 @@ angular.module('titanClienteV2App')
           },
         },
         {
-          field: 'mes',
+          field: 'Mes',
           cellTemplate: tmpl,
           displayName: $translate.instant('MES'),
           sort: {
@@ -64,7 +64,7 @@ angular.module('titanClienteV2App')
           },
         },
         {
-          field: 'ano',
+          field: 'Ano',
           cellTemplate: tmpl,
           displayName: $translate.instant('ANO'),
           sort: {
@@ -92,10 +92,10 @@ angular.module('titanClienteV2App')
     //Petición para obtener el Id de la relación de acuerdo a los campos
     administrativaCrudService.get('pago_mensual', $.param({
       limit: 0,
-      query:'PagoMensual.Persona:prueba'
+      query:'Responsable:prueba'
     })).then(function(response) {
       console.log(response.data);
-      self.gridOptions1 = response.data
+      self.gridOptions1.data = response.data
 
 
     });
