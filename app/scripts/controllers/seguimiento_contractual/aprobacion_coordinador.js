@@ -119,7 +119,7 @@ angular.module('titanClienteV2App')
       Función que obtiene el nombre del docente
     */
     self.obtener_informacion_docente = function (){
-
+      
       self.iterador = 0;
       for (var i = 0; i < self.documentos.length; i++) {
         //Se realiza GET para obtener información
