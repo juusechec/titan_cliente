@@ -142,6 +142,16 @@ angular.module('titanClienteV2App')
             priority: 1
           },
         }
+        ,
+        {
+          field: 'EstadoPagoMensual.Nombre',
+          cellTemplate: tmpl,
+          displayName: 'Estado Solicitud',
+          sort: {
+            direction: uiGridConstants.ASC,
+            priority: 1
+          },
+        }        
       ]
     };
 

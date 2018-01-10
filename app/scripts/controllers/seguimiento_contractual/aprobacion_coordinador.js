@@ -14,7 +14,7 @@ angular.module('titanClienteV2App')
 
     //Se utiliza la variable self estandarizada
     var self = this;
-
+    self.objeto_docente=new Array();
     /*
       Creación tabla que tendrá todos los docentes relacionados al coordinador
     */
@@ -35,7 +35,7 @@ angular.module('titanClienteV2App')
           width: "15%"
         },
         {
-          field: 'nombre',
+          field: 'Nombre',
           cellTemplate: tmpl,
           displayName: $translate.instant('NAME_TEACHER'),
           sort: {
@@ -96,27 +96,14 @@ angular.module('titanClienteV2App')
         limit: 0,
         query:'Responsable:' + self.Documento
       })).then(function(response) {
-        console.log(response.data);
-        self.gridOptions1.data = response.data;
+
         self.documentos = response.data;
 
-        //Recorre el arreglo para guardar solo los números de documento de los docentes
-        //for (var i = 0; i < response.data.length; i++) {
-          //console.log(response.data[i].Persona);
-          //self.documentos = [response.data[i].Persona];
-      //  };
 
-        //console.log(self.documentos[0]);
-
-        //self.obtener_informacion_docente(self.documentos);
-
-
+        self.obtener_informacion_docente();
       });
 
-      //Se ejecuta función para obtener la información del coordinador
-      //self.obtener_informacion_coordinador(self.Documento)
 
-      self.obtener_informacion_docente();
 
     };
 
@@ -131,18 +118,39 @@ angular.module('titanClienteV2App')
     /*
       Función que obtiene el nombre del docente
     */
-    self.obtener_informacion_docente = function (documentos_docentes){
-      //console.log(self.documentos);
-      //var documento_docente = 79777053;
-      for (var i = 0; i < documentos_docentes.length; i++) {
+    self.obtener_informacion_docente = function (){
+
+      self.iterador = 0;
+      for (var i = 0; i < self.documentos.length; i++) {
         //Se realiza GET para obtener información
-        contratoRequest.get('contratos_docente', documentos_docentes[i]).
+       
+        contratoRequest.get('informacion_contrato_elaborado_contratista', self.documentos[i].NumeroContrato+'/'+self.documentos[i].VigenciaContrato).
         then(function(response){
-          self.objeto_docente = response.data;
-          console.log(self.objeto_docente);
-        })
+          self.objeto_docente.push(response.data.informacion_contratista.nombre_completo+self.iterador);
+          self.iterador++;
+          //console.log(self.objeto_docente.informacion_contratista.nombre_completo);
+    
+        });
+        
+       // self.documentos[i].Nombre=self.objeto_docente.informacion_contratista.nombre_completo;
+       
+        //  console.log(i);
+        console.log(self.objeto_docente.length);
       }
 
+      console.log(self.objeto_docente);
+      //console.log(self.objeto_docente.length);
+
+      for (var j =  self.documentos.length-1; j >= 0; j--){
+        
+       // console.log(self.objeto_docente);
+       console.log(self.objeto_docente.pop());
+
+       // self.documentos[j].Nombre=self.objeto_docente[j];
+      }
+
+      self.gridOptions1.data=self.documentos;
+      //console.log(self.objeto_docente);
     }
 
   });
