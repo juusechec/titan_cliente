@@ -14,10 +14,9 @@ angular.module('titanClienteV2App')
 
     //Se utiliza la variable self estandarizada
     var self = this;
-    self.contratistas = [];
 
     /*
-      Creación tabla que tendrá todos los contratistas relacionados al supervisor
+      Creación tabla que tendrá todos los docentes relacionados al coordinador
     */
     self.gridOptions1 = {
       enableSorting: true,
@@ -46,9 +45,9 @@ angular.module('titanClienteV2App')
         },
 
         {
-          field: 'num_vinculacion',
+          field: 'NumeroContrato',
           cellTemplate: tmpl,
-          displayName: $translate.instant('DEPENDENCIA'),
+          displayName: $translate.instant('NUM_VIN'),
           sort: {
             direction: uiGridConstants.ASC,
             priority: 1
@@ -57,7 +56,7 @@ angular.module('titanClienteV2App')
         {
           field: 'Mes',
           cellTemplate: tmpl,
-          displayName: $translate.instant('MES'),
+          displayName: $translate.instant('MES_SOLICITUD'),
           sort: {
             direction: uiGridConstants.ASC,
             priority: 1
@@ -66,7 +65,7 @@ angular.module('titanClienteV2App')
         {
           field: 'Ano',
           cellTemplate: tmpl,
-          displayName: $translate.instant('ANO'),
+          displayName: $translate.instant('ANO_SOLICITUD'),
           sort: {
             direction: uiGridConstants.ASC,
             priority: 1
@@ -88,17 +87,62 @@ angular.module('titanClienteV2App')
       self.gridApi = gridApi;
     };
 
+    /*
+    Función que al recibir el número de documento del coordinador cargue los correspondientes
+    */
+    self.obtener_docentes_coordinador = function () {
+      //Petición para obtener el Id de la relación de acuerdo a los campos
+      administrativaCrudService.get('pago_mensual', $.param({
+        limit: 0,
+        query:'Responsable:' + self.Documento
+      })).then(function(response) {
+        console.log(response.data);
+        self.gridOptions1.data = response.data;
+        self.documentos = response.data;
 
-    //Petición para obtener el Id de la relación de acuerdo a los campos
-    administrativaCrudService.get('pago_mensual', $.param({
-      limit: 0,
-      query:'Responsable:prueba'
-    })).then(function(response) {
-      console.log(response.data);
-      self.gridOptions1.data = response.data
+        //Recorre el arreglo para guardar solo los números de documento de los docentes
+        //for (var i = 0; i < response.data.length; i++) {
+          //console.log(response.data[i].Persona);
+          //self.documentos = [response.data[i].Persona];
+      //  };
+
+        //console.log(self.documentos[0]);
+
+        //self.obtener_informacion_docente(self.documentos);
 
 
-    });
+      });
 
+      //Se ejecuta función para obtener la información del coordinador
+      //self.obtener_informacion_coordinador(self.Documento)
+
+      self.obtener_informacion_docente();
+
+    };
+
+
+    /*
+      Función que obtiene la información correspondiente al coordinador
+    */
+    self.obtener_informacion_coordinador = function (documento){
+        //Se realiza petición a servicio de academica que retorna la información del coordinador
+    };
+
+    /*
+      Función que obtiene el nombre del docente
+    */
+    self.obtener_informacion_docente = function (documentos_docentes){
+      //console.log(self.documentos);
+      //var documento_docente = 79777053;
+      for (var i = 0; i < documentos_docentes.length; i++) {
+        //Se realiza GET para obtener información
+        contratoRequest.get('contratos_docente', documentos_docentes[i]).
+        then(function(response){
+          self.objeto_docente = response.data;
+          console.log(self.objeto_docente);
+        })
+      }
+
+    }
 
   });
