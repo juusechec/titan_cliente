@@ -8,13 +8,13 @@
  * Controller of the titanClienteV2App
  */
 angular.module('titanClienteV2App')
-  .controller('AprobacionCoordinadorCtrl', function (oikosRequest, $http, uiGridConstants, contratoRequest, $translate, administrativaCrudService, administrativaAmazonService) {
+  .controller('AprobacionCoordinadorCtrl', function(oikosRequest, $http, uiGridConstants, contratoRequest, $translate, administrativaCrudService, administrativaAmazonService, academicaService) {
     //Variable de template que permite la edición de las filas de acuerdo a la condición ng-if
     var tmpl = '<div ng-if="!row.entity.editable">{{COL_FIELD}}</div><div ng-if="row.entity.editable"><input ng-model="MODEL_COL_FIELD"</div>';
 
     //Se utiliza la variable self estandarizada
     var self = this;
-    self.objeto_docente=new Array();
+    self.objeto_docente = [];
     /*
       Creación tabla que tendrá todos los docentes relacionados al coordinador
     */
@@ -23,8 +23,7 @@ angular.module('titanClienteV2App')
       enableFiltering: true,
       resizable: true,
       rowHeight: 40,
-      columnDefs: [
-        {
+      columnDefs: [{
           field: 'Persona',
           cellTemplate: tmpl,
           displayName: $translate.instant('DOCUMENTO'),
@@ -75,82 +74,57 @@ angular.module('titanClienteV2App')
           field: 'Acciones',
           displayName: $translate.instant('ACC'),
           cellTemplate: '<a type="button" title="Ver soportes" type="button" class="fa fa-eye fa-lg  faa-shake animated-hover"' +
-          'ng-click="grid.appScope.aprobacionDocumentos.verInformacionContrato(row.entity)" data-toggle="modal" data-target="#modal_visualizar_documentos"></a>',
+            'ng-click="grid.appScope.aprobacionDocumentos.verInformacionContrato(row.entity)" data-toggle="modal" data-target="#modal_visualizar_documentos"></a>',
           width: "10%"
         }
       ]
     };
 
 
-
-    self.gridOptions1.onRegisterApi = function (gridApi) {
+    /*
+      Función que permite obtener la data de la fila seleccionada
+    */
+    self.gridOptions1.onRegisterApi = function(gridApi) {
       self.gridApi = gridApi;
     };
 
     /*
     Función que al recibir el número de documento del coordinador cargue los correspondientes
     */
-    self.obtener_docentes_coordinador = function () {
+    self.obtener_docentes_coordinador = function() {
+
+      self.obtener_informacion_coordinador(self.Documento);
       //Petición para obtener el Id de la relación de acuerdo a los campos
       administrativaCrudService.get('pago_mensual', $.param({
         limit: 0,
-        query:'Responsable:' + self.Documento
+        query: 'Responsable:' + self.Documento
       })).then(function(response) {
-
         self.documentos = response.data;
-
-
-        self.obtener_informacion_docente();
+        //self.obtener_informacion_docente();
+        angular.forEach(self.documentos, function(value) {
+          console.log(value);
+          contratoRequest.get('informacion_contrato_elaborado_contratista', value.NumeroContrato + '/' + value.VigenciaContrato).
+          then(function(response) {
+            value.Nombre = response.data.informacion_contratista.nombre_completo;
+          });
+        });
+        self.gridOptions1.data=self.documentos;
       });
-
-
-
     };
 
 
     /*
       Función que obtiene la información correspondiente al coordinador
     */
-    self.obtener_informacion_coordinador = function (documento){
-        //Se realiza petición a servicio de academica que retorna la información del coordinador
+    self.obtener_informacion_coordinador = function(documento) {
+      //Se realiza petición a servicio de academica que retorna la información del coordinador
+      academicaService.get('coordinador_carrera_snies', documento).
+      then(function(response) {
+        self.informacion_coordinador = response.data;
+        console.log(self.informacion_coordinador);
+        self.coordinador = self.informacion_coordinador.coordinadorCollection.coordinador[0];
+        console.log(self.coordinador.nombre_coordinador);
+      })
     };
-
-    /*
-      Función que obtiene el nombre del docente
-    */
-    self.obtener_informacion_docente = function (){
-      
-      self.iterador = 0;
-      for (var i = 0; i < self.documentos.length; i++) {
-        //Se realiza GET para obtener información
-       
-        contratoRequest.get('informacion_contrato_elaborado_contratista', self.documentos[i].NumeroContrato+'/'+self.documentos[i].VigenciaContrato).
-        then(function(response){
-          self.objeto_docente.push(response.data.informacion_contratista.nombre_completo+self.iterador);
-          self.iterador++;
-          //console.log(self.objeto_docente.informacion_contratista.nombre_completo);
-    
-        });
-        
-       // self.documentos[i].Nombre=self.objeto_docente.informacion_contratista.nombre_completo;
-       
-        //  console.log(i);
-        console.log(self.objeto_docente.length);
-      }
-
-      console.log(self.objeto_docente);
-      //console.log(self.objeto_docente.length);
-
-      for (var j =  self.documentos.length-1; j >= 0; j--){
-        
-       // console.log(self.objeto_docente);
-       console.log(self.objeto_docente.pop());
-
-       // self.documentos[j].Nombre=self.objeto_docente[j];
-      }
-
-      self.gridOptions1.data=self.documentos;
-      //console.log(self.objeto_docente);
-    }
 
   });
