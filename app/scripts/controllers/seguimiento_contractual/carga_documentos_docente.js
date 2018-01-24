@@ -8,7 +8,7 @@
  * Controller of the titanClienteV2App
  */
 angular.module('titanClienteV2App')
-  .controller('CargaDocumentosDocenteCtrl', function ($scope, $http, $translate, uiGridConstants, contratoRequest,administrativaCrudService,nuxeo, $q, coreRequest) {
+  .controller('CargaDocumentosDocenteCtrl', function ($scope, $http, $translate, uiGridConstants, contratoRequest, administrativaCrudService, nuxeo, $q, coreRequest) {
     //Variable de template que permite la edición de las filas de acuerdo a la condición ng-if
     var tmpl = '<div ng-if="!row.entity.editable">{{COL_FIELD}}</div><div ng-if="row.entity.editable"><input ng-model="MODEL_COL_FIELD"</div>';
 
@@ -83,7 +83,7 @@ angular.module('titanClienteV2App')
           field: 'Acciones',
           displayName: $translate.instant('ACC'),
           cellTemplate: '<a type="button" title="{{\'SOLICITAR_PAGO\'| translate }}" type="button" class="fa fa-money fa-lg  faa-shake animated-hover" ng-click="grid.appScope.cargaDocumentosDocente.solicitar_pago(row.entity)"   data-toggle="modal" data-target="#modal_enviar_solicitud" >' +
-          '</a>&nbsp;' + ' <a type="button" title="{{\'CARGAR_LISTAS\'| translate }}" type="button" class="fa fa-upload fa-lg  faa-shake animated-hover" ng-click="grid.appScope.cargaDocumentosDocente.cargar_soportes(row.entity)"  data-toggle="modal" data-target="#modal_carga_listas_docente">',
+            '</a>&nbsp;' + ' <a type="button" title="{{\'CARGAR_LISTAS\'| translate }}" type="button" class="fa fa-upload fa-lg  faa-shake animated-hover" ng-click="grid.appScope.cargaDocumentosDocente.cargar_soportes(row.entity)"  data-toggle="modal" data-target="#modal_carga_listas_docente">',
           width: "10%"
         }
       ]
@@ -151,7 +151,7 @@ angular.module('titanClienteV2App')
             direction: uiGridConstants.ASC,
             priority: 1
           },
-        }        
+        }
       ]
     };
 
@@ -160,14 +160,14 @@ angular.module('titanClienteV2App')
     self.gridOptions2.onRegisterApi = function (gridApi) {
       self.gridApi2 = gridApi;
       self.seleccionados = self.gridApi2.selection.selectedCount;
-      self.gridApi2.selection.on.rowSelectionChanged($scope, function(row){
+      self.gridApi2.selection.on.rowSelectionChanged($scope, function (row) {
 
         //self.seleccionados = self.gridApi2.selection.selectedCount;
-       self.seleccionado = row.isSelected;
-       //Condiciuonal para capturar la información de la fila seleccionado
-       if (self.seleccionado){
-         self.fila_seleccionada = row.entity;
-       }
+        self.seleccionado = row.isSelected;
+        //Condiciuonal para capturar la información de la fila seleccionado
+        if (self.seleccionado) {
+          self.fila_seleccionada = row.entity;
+        }
       });
     };
     /*
@@ -227,34 +227,34 @@ angular.module('titanClienteV2App')
     self.solicitar_pago = function (contrato) {
       console.log(contrato);
       self.contrato = contrato;
-      self.anios = [parseInt(self.contrato.Vigencia), parseInt(self.contrato.Vigencia)+1, parseInt(self.contrato.Vigencia)+2];
+      self.anios = [parseInt(self.contrato.Vigencia), parseInt(self.contrato.Vigencia) + 1, parseInt(self.contrato.Vigencia) + 2];
 
     }
 
 
-    self.cargar_soportes  = function (contrato) {
+    self.cargar_soportes = function (contrato) {
       self.seleccionado = false;
       self.gridOptions2.data = [];
       self.contrato = contrato;
-      administrativaCrudService.get("pago_mensual",  $.param({
+      administrativaCrudService.get("pago_mensual", $.param({
         query: "NumeroContrato:" + self.contrato.Num_vinculacion + ",VigenciaContrato:" + self.contrato.Vigencia,
         limit: 0
       })).then(function (response) {
 
-        contratoRequest.get('contrato_elaborado', self.contrato.Num_vinculacion+'/'+self.contrato.Vigencia).then(function (response_ce) {
+        contratoRequest.get('contrato_elaborado', self.contrato.Num_vinculacion + '/' + self.contrato.Vigencia).then(function (response_ce) {
 
-         self.tipo_contrato= response_ce.data.contrato.tipo_contrato;
+          self.tipo_contrato = response_ce.data.contrato.tipo_contrato;
 
-        administrativaCrudService.get("item_informe_tipo_contrato",  $.param({
-          query: "TipoContrato:" + self.tipo_contrato,
-          limit: 0
-        })).then(function(response_iitc){
+          administrativaCrudService.get("item_informe_tipo_contrato", $.param({
+            query: "TipoContrato:" + self.tipo_contrato,
+            limit: 0
+          })).then(function (response_iitc) {
 
-        self.items = response_iitc.data;
+            self.items = response_iitc.data;
+
+          });
 
         });
-
-      });
 
         self.gridOptions2.data = response.data;
         console.log(self.gridOptions2.data);
@@ -266,9 +266,15 @@ angular.module('titanClienteV2App')
     self.enviar_solicitud = function () {
 
       if (self.mes !== undefined && self.anio !== undefined) {
+        administrativaCrudService.get("estado_pago_mensual", $.param({
+          query: "CodigoAbreviacion:CD",
+          limit: 0
+        })).then(function (response) {
+
+          var id_estado = response.data[0].Id;
         var pago_mensual = {
           CargoResponsable: "Prueba",
-          EstadoPagoMensual:{Id: 2},
+          EstadoPagoMensual: { Id: id_estado},
           FechaModificacion: new Date(),
           Mes: self.mes,
           Ano: self.anio,
@@ -278,33 +284,33 @@ angular.module('titanClienteV2App')
           VigenciaContrato: parseInt(self.contrato.Vigencia)
         };
 
-        administrativaCrudService.get("pago_mensual",$.param({
+        administrativaCrudService.get("pago_mensual", $.param({
           query: "NumeroContrato:" + self.contrato.Num_vinculacion
-          + ",VigenciaContrato:" + self.contrato.Vigencia
-          + ",Mes:" + self.mes
-          + ",Ano:" + self.anio
+            + ",VigenciaContrato:" + self.contrato.Vigencia
+            + ",Mes:" + self.mes
+            + ",Ano:" + self.anio
           ,
           limit: 0
-        })).then(function(response){
+        })).then(function (response) {
 
 
 
-          if(response.data==null){
+          if (response.data == null) {
 
-        administrativaCrudService.post("pago_mensual", pago_mensual).then(function(response){
+            administrativaCrudService.post("pago_mensual", pago_mensual).then(function (response) {
 
-         console.log(response.data);
-         swal(
-          'Solicitud registrada',
-          'Por favor cargue los soportes correspondientes',
-          'success'
-        )
+              console.log(response.data);
+              swal(
+                'Solicitud registrada',
+                'Por favor cargue los soportes correspondientes',
+                'success'
+              )
 
-         self.contrato = {};
+              self.contrato = {};
 
-        });
+            });
 
-          }else{
+          } else {
 
             swal(
               'Error',
@@ -318,7 +324,8 @@ angular.module('titanClienteV2App')
 
 
 
-      //  console.log(pago_mensual);
+        //  console.log(pago_mensual);
+      });
       } else {
         swal(
           'Error',
@@ -350,7 +357,7 @@ angular.module('titanClienteV2App')
     /*
       Función para cargar los documentos a la carpeta  destino
     */
-    self.cargarDocumento = function(nombre, descripcion, documento ,callback){
+    self.cargarDocumento = function (nombre, descripcion, documento, callback) {
       var defered = $q.defer();
       var promise = defered.promise;
 
@@ -362,131 +369,131 @@ angular.module('titanClienteV2App')
         })
         .input('/default-domain/workspaces/Titán')
         .execute()
-        .then(function(doc) {
-            var nuxeoBlob = new Nuxeo.Blob({ content: documento });
-            nuxeo.batchUpload()
+        .then(function (doc) {
+          var nuxeoBlob = new Nuxeo.Blob({ content: documento });
+          nuxeo.batchUpload()
             .upload(nuxeoBlob)
-            .then(function(res) {
+            .then(function (res) {
               return nuxeo.operation('Blob.AttachOnDocument')
-                  .param('document', doc.uid)
-                  .input(res.blob)
-                  .execute();
+                .param('document', doc.uid)
+                .input(res.blob)
+                .execute();
             })
-            .then(function() {
+            .then(function () {
               return nuxeo.repository().fetch(doc.uid, { schemas: ['dublincore', 'file'] });
             })
-            .then(function(doc) {
+            .then(function (doc) {
               var url = doc.uid;
               callback(url);
-               defered.resolve(url);
+              defered.resolve(url);
             })
-            .catch(function(error) {
+            .catch(function (error) {
               throw error;
               defered.reject(error)
             });
         })
-        .catch(function(error) {
-            throw error;
-            defered.reject(error)
+        .catch(function (error) {
+          throw error;
+          defered.reject(error)
         });
 
-        return promise;
-}
-
-self.subir_documento = function(){
-
-  var nombre_doc = self.contrato.Vigencia + self.contrato.Num_vinculacion + self.Documento + self.fila_seleccionada.Mes + self.fila_seleccionada.Ano;
-  var descripcion = self.item.ItemInforme.Nombre;
-
-  if(self.archivo){
-  var aux = self.cargarDocumento(nombre_doc,descripcion, self.fileModel ,function(url){
-
-  //Objeto documento
-  self.objeto_documento = {
-    "Nombre": nombre_doc,
-    "Descripcion":descripcion,
-    "TipoDocumento": {"Id":3},
-    "Contenido":JSON.stringify({"Tipo":"Archivo", "IdNuxeo": url, "Observaciones": self.observaciones}),
-    "Activo":true
-  };
-
-  console.log(self.objeto_documento);
-
-    //Post a la tabla documento del core
-    coreRequest.post('documento', self.objeto_documento)
-    .then(function(response){
-      self.id_documento =response.data.Id;
-
-      //Objeto soporte_pago_mensual
-      self.objeto_soporte = {
-        "PagoMensual": {"Id": self.fila_seleccionada.Id},
-        "Documento": self.id_documento,
-        "ItemInformeTipoContrato": {"Id":self.item.Id},
-        "Aprobado":false
-      };
-
-      //Post a la tabla soporte documento
-      administrativaCrudService.post('soporte_pago_mensual', self.objeto_soporte)
-      .then(function(response){
-        //Bandera de validacion
-        console.log("Se ha registrado el documento en el soporte mensual");
-      });
-    });
-
-
-});
-
-  }else if(self.link){
-
-
-  //Objeto documento
-  self.objeto_documento = {
-    "Nombre": nombre_doc,
-    "Descripcion":descripcion,
-    "TipoDocumento": {"Id":3},
-    "Contenido":JSON.stringify({"Tipo":"Enlace", "Enlace": self.enlace, "Observaciones": self.observaciones}),
-    "Activo":true
-  };
-
-  console.log(self.objeto_documento);
-
-    //Post a la tabla documento del core
-    coreRequest.post('documento', self.objeto_documento)
-    .then(function(response){
-      self.id_documento =response.data.Id;
-
-      //Objeto soporte_pago_mensual
-      self.objeto_soporte = {
-        "PagoMensual": {"Id": self.fila_seleccionada.Id},
-        "Documento": self.id_documento,
-        "ItemInformeTipoContrato": {"Id":self.item.Id},
-        "Aprobado":false
-      };
-
-      //Post a la tabla soporte documento
-      administrativaCrudService.post('soporte_pago_mensual', self.objeto_soporte)
-      .then(function(response){
-        //Bandera de validacion
-        console.log("Se ha registrado el documento en el soporte mensual");
-      });
-    });
-
-  }
-
-
-};
-
-
-self.cambiarCheckArchivo = function(){
-    if(self.archivo){
-      self.link=false;
+      return promise;
     }
-};
 
-self.cambiarCheckLink = function(){
-  if(self.link){
-    self.archivo=false;
-  }
-};
+    self.subir_documento = function () {
+
+      var nombre_doc = self.contrato.Vigencia + self.contrato.Num_vinculacion + self.Documento + self.fila_seleccionada.Mes + self.fila_seleccionada.Ano;
+      var descripcion = self.item.ItemInforme.Nombre;
+
+      if (self.archivo) {
+        var aux = self.cargarDocumento(nombre_doc, descripcion, self.fileModel, function (url) {
+
+          //Objeto documento
+          self.objeto_documento = {
+            "Nombre": nombre_doc,
+            "Descripcion": descripcion,
+            "TipoDocumento": { "Id": 3 },
+            "Contenido": JSON.stringify({ "Tipo": "Archivo", "IdNuxeo": url, "Observaciones": self.observaciones }),
+            "Activo": true
+          };
+
+          console.log(self.objeto_documento);
+
+          //Post a la tabla documento del core
+          coreRequest.post('documento', self.objeto_documento)
+            .then(function (response) {
+              self.id_documento = response.data.Id;
+
+              //Objeto soporte_pago_mensual
+              self.objeto_soporte = {
+                "PagoMensual": { "Id": self.fila_seleccionada.Id },
+                "Documento": self.id_documento,
+                "ItemInformeTipoContrato": { "Id": self.item.Id },
+                "Aprobado": false
+              };
+
+              //Post a la tabla soporte documento
+              administrativaCrudService.post('soporte_pago_mensual', self.objeto_soporte)
+                .then(function (response) {
+                  //Bandera de validacion
+                  console.log("Se ha registrado el documento en el soporte mensual");
+                });
+            });
+
+
+        });
+
+      } else if (self.link) {
+
+
+        //Objeto documento
+        self.objeto_documento = {
+          "Nombre": nombre_doc,
+          "Descripcion": descripcion,
+          "TipoDocumento": { "Id": 3 },
+          "Contenido": JSON.stringify({ "Tipo": "Enlace", "Enlace": self.enlace, "Observaciones": self.observaciones }),
+          "Activo": true
+        };
+
+        console.log(self.objeto_documento);
+
+        //Post a la tabla documento del core
+        coreRequest.post('documento', self.objeto_documento)
+          .then(function (response) {
+            self.id_documento = response.data.Id;
+
+            //Objeto soporte_pago_mensual
+            self.objeto_soporte = {
+              "PagoMensual": { "Id": self.fila_seleccionada.Id },
+              "Documento": self.id_documento,
+              "ItemInformeTipoContrato": { "Id": self.item.Id },
+              "Aprobado": false
+            };
+
+            //Post a la tabla soporte documento
+            administrativaCrudService.post('soporte_pago_mensual', self.objeto_soporte)
+              .then(function (response) {
+                //Bandera de validacion
+                console.log("Se ha registrado el documento en el soporte mensual");
+              });
+          });
+
+      }
+
+
+    };
+
+
+    self.cambiarCheckArchivo = function () {
+      if (self.archivo) {
+        self.link = false;
+      }
+    };
+
+    self.cambiarCheckLink = function () {
+      if (self.link) {
+        self.archivo = false;
+      }
+    };
 
   });
