@@ -26,6 +26,7 @@
               </div>
 
 
+
               <div class="row">
 
                 <div style="height: {{gridHeight}}px;" ui-grid="cargaDocumentosDocente.gridOptions1" align='center' ui-grid-auto-resize></div>
@@ -92,6 +93,7 @@
   </div>
 </div>
 
+<!--Modal Para Cargar Soportes De Acuerdo A Las SOlicitudes Creadas-->
 <div id="modal_carga_listas_docente" class="modal fade" role="dialog">
   <div class="modal-content col-md-10 col-md-offset-1" style="margin-top: 5%">
 
@@ -179,14 +181,15 @@
         </div>
       </div>
 
-      <button class="btn btn-success" ng-click="cargaDocumentosDocente.subir_documento()">
-        {{'ENVIAR' | translate }}
+
+      <button ng-if="cargaDocumentosDocente.seleccionado" class="btn btn-success" ng-click="cargaDocumentosDocente.subir_documento()">
+        {{'CAR_SOP' | translate }}
       </button>
     </div>
   </div>
 </div>
 
-
+<!--Modal de Crear la Solicitud-->
 <div id="modal_enviar_solicitud" class="modal fade" role="dialog">
   <div class="modal-content col-md-10 col-md-offset-1" style="margin-top: 5%">
 
