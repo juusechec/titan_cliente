@@ -8,7 +8,7 @@
  * Controller of the titanClienteV2App
  */
 angular.module('titanClienteV2App')
-  .controller('CargaDocumentosDocenteCtrl', function($scope, $http, $translate, uiGridConstants, contratoRequest, administrativaCrudService, nuxeo, $q, coreRequest, $window,$sce) {
+  .controller('CargaDocumentosDocenteCtrl', function($scope, $http, $translate, uiGridConstants, contratoRequest, administrativaCrudService, nuxeo, $q, coreRequest, $window,$sce, administrativaMidService) {
     //Variable de template que permite la edición de las filas de acuerdo a la condición ng-if
     var tmpl = '<div ng-if="!row.entity.editable">{{COL_FIELD}}</div><div ng-if="row.entity.editable"><input ng-model="MODEL_COL_FIELD"</div>';
 
@@ -81,7 +81,7 @@ angular.module('titanClienteV2App')
             direction: uiGridConstants.ASC,
             priority: 1
           },
-          width: "20%"
+          width: "10%"
         },
         {
           field: 'Vigencia',
@@ -91,17 +91,27 @@ angular.module('titanClienteV2App')
             direction: uiGridConstants.ASC,
             priority: 1
           },
-          width: "20%"
+          width: "10%"
         },
         {
-          field: 'Num_vinculacion',
+          field: 'NumeroVinculacion',
           cellTemplate: tmpl,
           displayName: $translate.instant('NUM_VINC'),
           sort: {
             direction: uiGridConstants.ASC,
             priority: 1
           },
-          width: "23%"
+          width: "15%"
+        },
+        {
+          field: 'Dedicacion',
+          cellTemplate: tmpl,
+          displayName: $translate.instant('DED'),
+          sort: {
+            direction: uiGridConstants.ASC,
+            priority: 1
+          },
+          width: "10%"
         },
         {
           field: 'Dependencia',
@@ -111,6 +121,12 @@ angular.module('titanClienteV2App')
             direction: uiGridConstants.ASC,
             priority: 1
           },
+        },
+        {
+          field: 'IdDependencia',
+          visible: false,
+          cellTemplate: tmpl,
+          displayName: "Id Dependencia",
         },
         {
           field: 'Acciones',
@@ -146,7 +162,7 @@ angular.module('titanClienteV2App')
           },
         },
         {
-          field: 'VigenciaContrato',
+          field: 'Vigencia',
           cellTemplate: tmpl,
           displayName: $translate.instant('VIGENCIA'),
           sort: {
@@ -194,39 +210,23 @@ angular.module('titanClienteV2App')
       ]
     };
 
-
+    //No permite poder hacer multiples selecciones en la grilla
     self.gridOptions2.multiSelect = false;
+    /*
+      Función para obtener la data de la fila seleccionada en la grilla
+    */
     self.gridOptions2.onRegisterApi = function(gridApi) {
       self.gridApi2 = gridApi;
       self.seleccionados = self.gridApi2.selection.selectedCount;
       self.gridApi2.selection.on.rowSelectionChanged($scope, function(row) {
-
-        //self.seleccionados = self.gridApi2.selection.selectedCount;
+        //Contiene la info del elemento seleccionado
         self.seleccionado = row.isSelected;
         //Condiciuonal para capturar la información de la fila seleccionado
         if (self.seleccionado) {
-
           self.fila_seleccionada = row.entity;
           self.obtener_doc();
         }
       });
-    };
-    /*
-      Función que recibe un objeto que posee un arreglo con información de los contratos que tiene el docente.
-      Eśta función extrae el arreglo y los procesa para adicionar un atributo de validación.
-    */
-    self.procesar_contratos = function(contratos_docente) {
-
-      for (var i = 0; i < contratos_docente.length; i++) {
-        self.contratos[i] = {
-          Num_vinculacion: contratos_docente[i].numero_vinculacion,
-          Nombre: contratos_docente[i].nombre_docente,
-          Vigencia: contratos_docente[i].vigencia,
-          Dependencia: contratos_docente[i].dependencia,
-          Resolucion: contratos_docente[i].dedicacion,
-          validacion: false
-        }
-      }
     };
 
     /*
@@ -237,20 +237,20 @@ angular.module('titanClienteV2App')
       self.gridOptions1.data = [];
       self.contratos = [];
       try {
-        contratoRequest.get('contratos_docente', self.Documento).then(function(response) {
+        administrativaMidService.get('aprobacion_pago/get_contratos_docente', self.Documento).then(function(response) {
 
           //Contiene la respuesta de la petición
           self.respuesta_docente = response.data;
 
-          //Procesamiento de datos para grid
-          self.procesar_contratos(self.respuesta_docente.contratos_docentes.contratos_docente);
-          console.log(self.contratos);
+          console.log(self.respuesta_docente);
 
           //Variable que contiene el nombre del docente
-          self.nombre_docente = self.contratos[0].Nombre;
+          self.nombre_docente = self.respuesta_docente[0].NombreDocente;
+          console.log(self.nombre_docente);
+          console.log(self.respuesta_docente.NombreDocente);
 
           //Carga la información en la tabla
-          self.gridOptions1.data = self.contratos;
+          self.gridOptions1.data = self.respuesta_docente;
 
         });
 
@@ -268,7 +268,7 @@ angular.module('titanClienteV2App')
     self.solicitar_pago = function(contrato) {
       console.log(contrato);
       self.contrato = contrato;
-      self.anios = [parseInt(self.contrato.Vigencia), parseInt(self.contrato.Vigencia) + 1, parseInt(self.contrato.Vigencia) + 2];
+      self.anios = [parseInt(self.contrato.Vigencia) - 1, parseInt(self.contrato.Vigencia), parseInt(self.contrato.Vigencia) + 1];
 
     }
 
@@ -278,13 +278,14 @@ angular.module('titanClienteV2App')
       self.gridOptions2.data = [];
       self.contrato = contrato;
       administrativaCrudService.get("pago_mensual", $.param({
-        query: "NumeroContrato:" + self.contrato.Num_vinculacion + ",VigenciaContrato:" + self.contrato.Vigencia,
+        query: "NumeroContrato:" + self.contrato.NumeroVinculacion + ",VigenciaContrato:" + self.contrato.Vigencia,
         limit: 0
       })).then(function(response) {
 
-        contratoRequest.get('contrato_elaborado', self.contrato.Num_vinculacion + '/' + self.contrato.Vigencia).then(function(response_ce) {
+        contratoRequest.get('contrato_elaborado', self.contrato.NumeroVinculacion + '/' + self.contrato.Vigencia).then(function(response_ce) {
 
           self.tipo_contrato = response_ce.data.contrato.tipo_contrato;
+          console.log(self.tipo_contrato);
 
           administrativaCrudService.get("item_informe_tipo_contrato", $.param({
             query: "TipoContrato:" + self.tipo_contrato,
@@ -306,23 +307,32 @@ angular.module('titanClienteV2App')
 
     self.enviar_solicitud = function() {
 
+      console.log(self.contrato);
+
+      /*titanMidRequest.get('aprobacion_pago/informacion_coordinador', self.contrato.Id_Dependencia)
+      .then(function(response){
+        self.informacion_coordinador = response.data;
+        console.log(self.informacion_coordinador)
+        console.log(self.informacion_coordinador[0].Documento)
+      })*/
+
       if (self.mes !== undefined && self.anio !== undefined) {
         var pago_mensual = {
-          CargoResponsable: "Prueba",
+          CargoResponsable: "Coordinador " + self.contrato.Dependencia,
           EstadoPagoMensual: {
             Id: 2
           },
           FechaModificacion: new Date(),
           Mes: self.mes,
           Ano: self.anio,
-          NumeroContrato: self.contrato.Num_vinculacion,
+          NumeroContrato: self.contrato.NumeroVinculacion,
           Persona: self.Documento,
           Responsable: "prueba",
           VigenciaContrato: parseInt(self.contrato.Vigencia)
         };
 
         administrativaCrudService.get("pago_mensual", $.param({
-          query: "NumeroContrato:" + self.contrato.Num_vinculacion +
+          query: "NumeroContrato:" + self.contrato.NumeroVinculacion +
             ",VigenciaContrato:" + self.contrato.Vigencia +
             ",Mes:" + self.mes +
             ",Ano:" + self.anio,
@@ -441,7 +451,7 @@ angular.module('titanClienteV2App')
 
     self.subir_documento = function() {
 
-      var nombre_doc = self.contrato.Vigencia + self.contrato.Num_vinculacion + self.Documento + self.fila_seleccionada.Mes + self.fila_seleccionada.Ano;
+      var nombre_doc = self.contrato.Vigencia + self.contrato.NumeroVinculacion + self.Documento + self.fila_seleccionada.Mes + self.fila_seleccionada.Ano;
       var descripcion = self.item.ItemInforme.Nombre;
 
       if (self.archivo) {
@@ -609,7 +619,7 @@ angular.module('titanClienteV2App')
      */
      self.obtener_doc = function (){
        console.log(self.fila_seleccionada);
-       var nombre_docs = self.contrato.Vigencia + self.contrato.Num_vinculacion + self.Documento + self.fila_seleccionada.Mes + self.fila_seleccionada.Ano;
+       var nombre_docs = self.contrato.Vigencia + self.contrato.NumeroVinculacion + self.Documento + self.fila_seleccionada.Mes + self.fila_seleccionada.Ano;
        coreRequest.get('documento', $.param ({
         query: "Nombre:" + nombre_docs,
         limit:0
