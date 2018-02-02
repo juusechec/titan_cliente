@@ -76,7 +76,7 @@ angular.module('titanClienteV2App')
         {
           field: 'Acciones',
           displayName: $translate.instant('ACC'),
-          cellTemplate: ' <a type="button" title="Aprobar pago" type="button" class="fa fa-check fa-lg  faa-shake animated-hover" ng-if="!row.entity.validacion" ng-click="grid.appScope.aprobacionDocumentos.validarCumplido(row.entity)">' +
+          cellTemplate: ' <a type="button" title="Aprobar pago" type="button" class="fa fa-check fa-lg  faa-shake animated-hover" ng-if="!row.entity.validacion" ng-click="grid.appScope.aprobacionDocumentos.verificarDocumentos(row.entity)">' +
             '</a>&nbsp;' + '<a type="button" title="Rechazar pago" type="button" class="fa fa-close fa-lg  faa-shake animated-hover"' +
             'ng-if="row.entity.validacion" ng-click="grid.appScope.aprobacionDocumentos.invalidarCumplido(row.entity)"></a>' +
             '<a type="button" title="Ver información" type="button" class="fa fa-eye fa-lg  faa-shake animated-hover"' +
@@ -213,7 +213,7 @@ angular.module('titanClienteV2App')
 
         self.respuesta_informacion_contrato = response.data;
 
-        contratoRequest.get('acta_inicio_elaborado', contrato_contratista.NumeroContrato + '/' +  contrato_contratista.VigenciaContrato).then(function (response) {
+        contratoRequest.get('acta_inicio_elaborado', contrato_contratista.NumeroContrato + '/' + contrato_contratista.VigenciaContrato).then(function (response) {
 
 
           self.respuesta_acta_inicio = response.data;
@@ -221,7 +221,7 @@ angular.module('titanClienteV2App')
           console.log(self.respuesta_acta_inicio);
 
           administrativaAmazonService.get('contrato_disponibilidad', $.param({
-            query: "NumeroContrato:" + contrato_contratista.NumeroContrato + ",Vigencia:" +  contrato_contratista.VigenciaContrato,
+            query: "NumeroContrato:" + contrato_contratista.NumeroContrato + ",Vigencia:" + contrato_contratista.VigenciaContrato,
             limit: 0
           })).then(function (response) {
 
@@ -266,12 +266,71 @@ angular.module('titanClienteV2App')
 
     };
 
-    self.verificarDocumentos = function (contrato) {
-
+    self.verificarDocumentos = function (pago_mensual) {
+      self.aprobado = false;
+      self.aux_pago_mensual = pago_mensual;
       administrativaCrudService.get('soporte_pago_mensual', $.param({
-        query: "PagoMensual.Persona:" + true,
+        query: "PagoMensual.NumeroContrato:" +    self.aux_pago_mensual.NumeroContrato + ",PagoMensual.VigenciaContrato:" +    self.aux_pago_mensual.VigenciaContrato + ",PagoMensual.Mes:" +    self.aux_pago_mensual.Mes + ",PagoMensual.Ano:" +    self.aux_pago_mensual.Ano,
         limit: 0
-      }))
+      })).then(function (response) {
+
+        var soportes = response.data;
+
+        if (soportes !== null) {
+
+          for (var i = 0; i < soportes.length; i++) {
+
+            if (!soportes[i].Aprobado) {
+              self.aprobado = false;
+              break;
+            } else {
+              self.aprobado = true;
+
+              administrativaCrudService.get('estado_pago_mensual', $.param({
+                limit: 0,
+                query: 'CodigoAbreviacion:AD'
+              })).then(function (responseCod) {
+
+                var sig_estado = responseCod.data;
+                
+                self.aux_pago_mensual.EstadoPagoMensual.Id = sig_estado[0].Id;
+
+                administrativaCrudService.put('pago_mensual', self.aux_pago_mensual.Id, self.aux_pago_mensual).then(function (response) {
+
+                  if (response.data === "OK") {
+
+                    swal(
+                      'Documentos Aprobados',
+                      'Se ha registrado la aprobación de los documentos',
+                      'success'
+                    )
+                    self.obtener_informacion_supervisor();
+                    self.gridApi.core.refresh();
+                  } else {
+
+
+                    swal(
+                      'Error',
+                      'No se ha podido registrar el visto bueno',
+                      'error'
+                    );
+                  }
+
+                });
+
+              });
+    
+            }
+          }
+        } else {
+          console.log("No existen soportes para el cumplido");
+
+        }
+
+
+      })
+
+
 
     }
 
