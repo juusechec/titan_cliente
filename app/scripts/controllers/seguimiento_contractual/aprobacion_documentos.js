@@ -26,16 +26,7 @@ angular.module('titanClienteV2App')
       rowHeight: 40,
       columnDefs: [
         {
-          field: 'nombre',
-          cellTemplate: tmpl,
-          displayName: $translate.instant('NAME_CONTR'),
-          sort: {
-            direction: uiGridConstants.ASC,
-            priority: 1
-          },
-        },
-        {
-          field: 'num_documento',
+          field: 'Persona',
           cellTemplate: tmpl,
           displayName: $translate.instant('DOCUMENTO'),
           sort: {
@@ -43,37 +34,53 @@ angular.module('titanClienteV2App')
             priority: 1
           },
           width: "15%"
-        }
-        ,
+        },
         {
-          field: 'dependencia',
+          field: 'Nombre',
           cellTemplate: tmpl,
-          displayName: $translate.instant('DEPENDENCIA'),
+          displayName: $translate.instant('NAME_TEACHER'),
           sort: {
             direction: uiGridConstants.ASC,
             priority: 1
           },
-        }
-        ,
-        {
-          field: 'cargo_supervision',
-          cellTemplate: tmpl,
-          displayName: $translate.instant('CAR_SUPER'),
-          sort: {
-            direction: uiGridConstants.ASC,
-            priority: 1
-          },
-        }
+        },
 
+        {
+          field: 'NumeroContrato',
+          cellTemplate: tmpl,
+          displayName: $translate.instant('NUM_VIN'),
+          sort: {
+            direction: uiGridConstants.ASC,
+            priority: 1
+          },
+        },
+        {
+          field: 'Mes',
+          cellTemplate: tmpl,
+          displayName: $translate.instant('MES_SOLICITUD'),
+          sort: {
+            direction: uiGridConstants.ASC,
+            priority: 1
+          },
+        },
+        {
+          field: 'Ano',
+          cellTemplate: tmpl,
+          displayName: $translate.instant('ANO_SOLICITUD'),
+          sort: {
+            direction: uiGridConstants.ASC,
+            priority: 1
+          },
+        }
         ,
         {
           field: 'Acciones',
           displayName: $translate.instant('ACC'),
           cellTemplate: ' <a type="button" title="Aprobar pago" type="button" class="fa fa-check fa-lg  faa-shake animated-hover" ng-if="!row.entity.validacion" ng-click="grid.appScope.aprobacionDocumentos.validarCumplido(row.entity)">' +
-          '</a>&nbsp;' + '<a type="button" title="Rechazar pago" type="button" class="fa fa-close fa-lg  faa-shake animated-hover"' +
-          'ng-if="row.entity.validacion" ng-click="grid.appScope.aprobacionDocumentos.invalidarCumplido(row.entity)"></a>' +
-          '<a type="button" title="Ver información" type="button" class="fa fa-eye fa-lg  faa-shake animated-hover"' +
-          'ng-click="grid.appScope.aprobacionDocumentos.verInformacionContrato(row.entity)" data-toggle="modal" data-target="#modal_informacion_contrato"></a>',
+            '</a>&nbsp;' + '<a type="button" title="Rechazar pago" type="button" class="fa fa-close fa-lg  faa-shake animated-hover"' +
+            'ng-if="row.entity.validacion" ng-click="grid.appScope.aprobacionDocumentos.invalidarCumplido(row.entity)"></a>' +
+            '<a type="button" title="Ver información" type="button" class="fa fa-eye fa-lg  faa-shake animated-hover"' +
+            'ng-click="grid.appScope.aprobacionDocumentos.verInformacionContrato(row.entity)" data-toggle="modal" data-target="#modal_informacion_contrato"></a>',
           width: "10%"
         }
       ]
@@ -131,7 +138,25 @@ angular.module('titanClienteV2App')
 
           self.supervisor = self.respuesta_supervisor_contratistas.supervisores.supervisor_contratista[0].supervisor;
 
-          self.gridOptions1.data = self.contratistas;
+
+          //Petición para obtener el Id de la relación de acuerdo a los campos
+          administrativaCrudService.get('pago_mensual', $.param({
+            limit: 0,
+            query: 'Responsable:' + self.Documento + ',EstadoPagoMensual.CodigoAbreviacion:PAD'
+          })).then(function (response) {
+            self.documentos = response.data;
+            //self.obtener_informacion_docente();
+            angular.forEach(self.documentos, function (value) {
+              console.log(value);
+              contratoRequest.get('informacion_contrato_elaborado_contratista', value.NumeroContrato + '/' + value.VigenciaContrato).
+                then(function (response) {
+                  value.Nombre = response.data.informacion_contratista.nombre_completo;
+                });
+            });
+            self.gridOptions1.data = self.documentos;
+          });
+
+          // self.gridOptions1.data = self.contratistas;
 
 
         });
@@ -184,11 +209,11 @@ angular.module('titanClienteV2App')
 
 
 
-      contratoRequest.get('informacion_contrato_elaborado_suscrito', contrato_contratista.contrato.numero_contrato + '/' + contrato_contratista.contrato.vigencia).then(function (response) {
+      contratoRequest.get('informacion_contrato_elaborado_suscrito', contrato_contratista.NumeroContrato + '/' + contrato_contratista.VigenciaContrato).then(function (response) {
 
         self.respuesta_informacion_contrato = response.data;
 
-        contratoRequest.get('acta_inicio_elaborado', contrato_contratista.contrato.numero_contrato + '/' + contrato_contratista.contrato.vigencia).then(function (response) {
+        contratoRequest.get('acta_inicio_elaborado', contrato_contratista.NumeroContrato + '/' +  contrato_contratista.VigenciaContrato).then(function (response) {
 
 
           self.respuesta_acta_inicio = response.data;
@@ -196,7 +221,7 @@ angular.module('titanClienteV2App')
           console.log(self.respuesta_acta_inicio);
 
           administrativaAmazonService.get('contrato_disponibilidad', $.param({
-            query: "NumeroContrato:" + contrato_contratista.contrato.numero_contrato + ",Vigencia:" + contrato_contratista.contrato.vigencia,
+            query: "NumeroContrato:" + contrato_contratista.NumeroContrato + ",Vigencia:" +  contrato_contratista.VigenciaContrato,
             limit: 0
           })).then(function (response) {
 
@@ -217,8 +242,8 @@ angular.module('titanClienteV2App')
             else {
 
               self.objeto_modal = {
-                numero_contrato: contrato_contratista.contrato.numero_contrato,
-                vigencia: contrato_contratista.contrato.vigencia,
+                numero_contrato: contrato_contratista.numeroContrato,
+                vigencia: contrato_contratista.VigenciaContrato,
                 cdp: self.cdp.NumeroCdp,
                 fecha_cdp: "2017-01-01",
                 crp: "123456",

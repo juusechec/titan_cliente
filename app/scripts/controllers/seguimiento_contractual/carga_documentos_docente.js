@@ -305,23 +305,18 @@ angular.module('titanClienteV2App')
     };
 
 
-    self.enviar_solicitud = function() {
-
-      console.log(self.contrato);
-
-      /*titanMidRequest.get('aprobacion_pago/informacion_coordinador', self.contrato.Id_Dependencia)
-      .then(function(response){
-        self.informacion_coordinador = response.data;
-        console.log(self.informacion_coordinador)
-        console.log(self.informacion_coordinador[0].Documento)
-      })*/
+    self.enviar_solicitud = function () {
 
       if (self.mes !== undefined && self.anio !== undefined) {
+        administrativaCrudService.get("estado_pago_mensual", $.param({
+          query: "CodigoAbreviacion:CD",
+          limit: 0
+        })).then(function (response) {
+
+          var id_estado = response.data[0].Id;
         var pago_mensual = {
           CargoResponsable: "Coordinador " + self.contrato.Dependencia,
-          EstadoPagoMensual: {
-            Id: 2
-          },
+          EstadoPagoMensual: { Id: id_estado},
           FechaModificacion: new Date(),
           Mes: self.mes,
           Ano: self.anio,
@@ -332,18 +327,19 @@ angular.module('titanClienteV2App')
         };
 
         administrativaCrudService.get("pago_mensual", $.param({
-          query: "NumeroContrato:" + self.contrato.NumeroVinculacion +
-            ",VigenciaContrato:" + self.contrato.Vigencia +
-            ",Mes:" + self.mes +
-            ",Ano:" + self.anio,
+          query: "NumeroContrato:" + self.contrato.NumeroVinculacion
+            + ",VigenciaContrato:" + self.contrato.Vigencia
+            + ",Mes:" + self.mes
+            + ",Ano:" + self.anio
+          ,
           limit: 0
-        })).then(function(response) {
+        })).then(function (response) {
 
 
 
           if (response.data == null) {
 
-            administrativaCrudService.post("pago_mensual", pago_mensual).then(function(response) {
+            administrativaCrudService.post("pago_mensual", pago_mensual).then(function (response) {
 
               console.log(response.data);
               swal(
@@ -371,6 +367,7 @@ angular.module('titanClienteV2App')
 
 
         //  console.log(pago_mensual);
+      });
       } else {
         swal(
           'Error',
@@ -379,7 +376,7 @@ angular.module('titanClienteV2App')
         );
       }
 
-    };
+};
 
     /*
       Función para visualizar modal con los items preestablecidos para los docentes de TCO/MTO
