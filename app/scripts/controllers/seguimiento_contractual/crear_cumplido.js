@@ -81,7 +81,7 @@ angular.module('titanClienteV2App')
                             //Estilo para el header del PDF
                             style: ['bottom_space'],
                             text:[
-                              {text:'EL JEFE DE LA ' + self.cumplido_informacion.dependencia, bold: true,  alignment: 'center'}, '\n\n',
+                              {text:'EL JEFE DE ' + self.cumplido_informacion.dependencia, bold: true,  alignment: 'center'}, '\n\n',
                               {text:'DE LA UNIVERSIDAD DISTRITAL FRANCISCO JOSÉ DE CALDAS', bold: true,  alignment: 'center'}, '\n\n\n\n',
                               {text:'CERTIFICA QUE: ', bold: true,  alignment: 'center'}, '\n\n\n\n\n\n'
                             ]
@@ -92,7 +92,7 @@ angular.module('titanClienteV2App')
                                'Que el señor(a) ' + self.cumplido_informacion.nombre_completo + ' identificado con la cédula de ciudadanía '+
                                self.Documento + ' de ' + self.cumplido_informacion.Documento.ciudad + ', cumplió a satisfacción con el objeto establecido en el Contrato de Prestación de Servicios No. ' + self.cumplido.numero_contrato +
                                ' del '+ self.cumplido_informacion.contrato.fecha + ', que dicho Contrato tiene disponibilidad presupuestal No 45541 del 25 de junio de 2017 y certificado de registro presupuestal No. 5087 del 25 de enero de 2017 ' +
-                               ' y con el pago reglamentario de los aportes al sistema de seguridad social del 1 al 31 de diciembre de 2017.', '\n\n',
+                               ' y con el pago reglamentario de los aportes al sistema de seguridad social del 1 al 31 de' + self.cumplido_informacion.mes + ' diciembre de 2017.', '\n\n',
 
                                '' + self.comprobar_contenido(self.parrafo_adicional) + '', '\n\n',
 

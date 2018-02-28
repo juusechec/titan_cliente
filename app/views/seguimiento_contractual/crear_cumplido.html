@@ -20,63 +20,73 @@
               </div>
               <div class="form-group col-lg-6">
                 <label>{{ 'NAME_CONTRATISTA' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.nombre_completo">
+                <span class="form-control" disabled>{{crearCumplido.cumplido_informacion.nombre_completo}}</span>
               </div>
               <div class="form-group col-lg-6">
                 <label>{{ 'TIPO_DOC' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.Documento.tipo">
+                <span class="form-control" disabled>{{crearCumplido.cumplido_informacion.Documento.tipo}}</span>
               </div>
               <div class="form-group col-lg-6">
                 <label>{{ 'CIUDAD_DOC' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.Documento.ciudad">
+                <span class="form-control" disabled>{{crearCumplido.cumplido_informacion.Documento.tipo}}</span>
               </div>
               <div class="form-group col-lg-6">
                 <label>{{ 'NUM_CONTRAC' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido.numero_contrato">
+                <span class="form-control" disabled>{{crearCumplido.cumplido.numero_contrato}}</span>
               </div>
               <div class="form-group col-lg-6">
                 <label>{{ 'FECH_SUSC_CONT' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.contrato.fecha">
+                <span class="form-control" disabled>{{crearCumplido.cumplido_informacion.contrato.fecha}}</span>
               </div>
               <div class="form-group col-lg-6">
                 <label>{{ 'UNIDAD_EJE' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.unidad_ejecutora.nombre">
+                <span class="form-control" disabled>{{crearCumplido.cumplido_informacion.unidad_ejecutora.nombre}}</span>
               </div>
 
               <div class="form-group col-lg-6">
                 <label>{{ 'VIGENCIA' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido.vigencia">
+                <span class="form-control" disabled>{{crearCumplido.cumplido.vigencia}}</span>
               </div>
 
               <div class="form-group col-lg-6">
                 <label>{{ 'TIPO_CUENTA' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.cuenta.tipo">
-              </div><div class="form-group col-lg-6">
+                <span class="form-control" disabled>{{crearCumplido.cumplido_informacion.cuenta.tipo}}</span>
+              </div>
+
+              <div class="form-group col-lg-6">
                 <label>{{ 'BANCO' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.cuenta.banco">
+                <span class="form-control" disabled>{{crearCumplido.cumplido_informacion.cuenta.banco}}</span>
               </div>
               <div class="form-group col-lg-6">
                 <label>{{ 'NUM_CUENTA' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.cuenta.numero">
+                <span class="form-control" disabled>{{crearCumplido.cumplido_informacion.cuenta.numero}}</span>
               </div>
 
               <div class="form-group col-lg-6">
                 <label>{{ 'DEPENDENCIA' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.dependencia">
+                <span class="form-control" disabled>{{crearCumplido.cumplido_informacion.dependencia}}</span>
               </div>
 
               <div class="form-group col-lg-6">
                 <label>{{ 'SUPERVISOR' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.supervisor.nombre">
+                <span class="form-control" disabled>{{crearCumplido.cumplido_informacion.supervisor.nombre}}</span>
               </div>
 
               <div class="form-group col-lg-6">
                 <label>{{ 'CARGO_SUP' | translate }}</label>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.supervisor.cargo">
+                <span class="form-control" disabled>{{crearCumplido.cumplido_informacion.supervisor.cargo}}</span>
               </div>
 
+            </div><!--Row no editable-->
+
+            <div class="row">
+              <div class="form-group col-lg-12">
+              <h2>Por favor indique los parámetros para generar el cumplido</h2>
+            </div>
               <div class="form-group col-lg-6">
+
                 <label>{{ 'CUMPLIDO_MES' | translate }}</label>
+                <br><br>
                     <select class="form-control"  ng-model="crearCumplido.cumplido_informacion.mes" required>
                            <option value="">{{ 'PLACE_MES' | translate }}</option>
                            <option value="ENERO">ENERO</option>
@@ -92,29 +102,32 @@
                            <option value="NOVIEMBRE">NOVIEMBRE</option>
                            <option value="DICIEMBRE">DICIEMBRE</option>
                     </select>
-              </div>
+                    <br>
+                    <label>{{ 'VALOR_COB' | translate }}</label><br>
+
+                    <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.valor_cobro" ui-money-mask="0">{{crearCumplido.cumplido_informacion.valor_cobro | currency}}
               </div>
 
+              <br><br>
               <div class="form-group col-lg-6">
                 <label>{{ 'DIAS_LABORADOS' | translate }}</label><br>
-                <p>{{ 'PLACE_DIAS_LAB' | translate }}</p>
-                {{ 'DIA_INI' | translate }}<input type="number" class="form-control" ng-model="crearCumplido.cumplido_informacion.dia_inicial" required>
-                {{ 'DIA_FIN' | translate }}<input type="number" class="form-control" ng-model="crearCumplido.cumplido_informacion.dia_final" required>
-
+                <!--<p>{{ 'PLACE_DIAS_LAB' | translate }}</p>-->
+                <div class="form-group col-lg-6">
+                    {{ 'DIA_INI' | translate }}<input type="number" class="form-control" ng-model="crearCumplido.cumplido_informacion.dia_inicial" min="1" max="30" required>
+                </div>
+                <div class="form-group col-lg-6">
+                    {{ 'DIA_FIN' | translate }}<input type="number" class="form-control" ng-model="crearCumplido.cumplido_informacion.dia_final" max="30" min="crearCumplido.cumplido_informacion.dia_inicial" required>
+                </div>
               </div>
-
-              <div class="form-group col-lg-6">
-                <label>{{ 'VALOR_COB' | translate }}</label><br>
-                <input type="text" class="form-control" ng-model="crearCumplido.cumplido_informacion.valor_cobro">
-              </div><br>
         </div>
-
+      </div>
 
 
                 <div class="form-group col-lg-8 col-lg-offset-2">
                   <!--Casilla de verificación para mostrar u ocultar el parrafo extra-->
-                  <label>{{ 'MEN_PARRA_EX' | translate }}:
+                  <label>
                         <input type="checkbox" ng-model="crearCumplido.checkboxModel.value1" ng-true-value="'YES'" ng-false-value="'NO'">
+                        {{ 'MEN_PARRA_EX' | translate }}:
                   </label><br/>
 
                 <!--Parrafo extra para incluir fuente de financiamiento-->
